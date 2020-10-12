@@ -12,15 +12,15 @@ const testData = [
 
 const Card = (props) => {
     return (
-        <TouchableOpacity>
-          {/* onPress={() => signIn({ username, password })} > */}
+        <TouchableOpacity
+          onPress={() => props.nav.navigate(props.screen)} >
             <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.header}>
                 <Image style={styles.profileImg} source={{uri: profileImg}} />
                 <Text style={{fontWeight:"bold",fontSize:18, alignSelf: "flex-start"}}> {props.title} </Text>
                 </View>
-                <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.text} </Text>
+                <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.name} is thriving! </Text>
                 {testData.map((item, idx) => (
                   <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
                 ))}
@@ -35,20 +35,20 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
-      padding: 1,
-      alignItems:"center",
+      //padding: 1,
+      //alignItems:"center",
     },
     card:{
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 3 },
       shadowOpacity: 0.5,
       shadowRadius: 5,  
-      elevation: 5,
-      height: 120,
-      width: 435,
+      elevation: 10,
+      //height: 120,
+      flex: 1,
+      //width: 350,
       backgroundColor:"white",
       borderRadius:15,
-      elevation:10,
       padding:10,
       marginVertical: 10,
     },
@@ -63,33 +63,4 @@ const styles = StyleSheet.create({
     }
 });
 
-
 export default Card;
-
-// const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       justifyContent: 'center',
-//       paddingTop: Constants.statusBarHeight,
-//       backgroundColor: '#ecf0f1',
-//       padding: 8,
-//       alignItems:"center"
-//     },
-//     card:{
-//       height:150,
-//       width:"80%",
-//       backgroundColor:"white",
-//       borderRadius:15,
-//       elevation:10,
-//       padding:10
-//     },
-//     profileImg:{
-//       width:30,
-//       height:30,
-//       borderRadius:50,
-//       marginRight:10,
-//     },
-//     header: {
-//       flexDirection:"row",
-//     }
-// });

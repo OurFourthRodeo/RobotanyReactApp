@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import AuthenticationContext from '../components/AuthContext';
 
 const initialState = {
+  name: '',
   username: '',
   password: '',
   errors: {},
@@ -11,16 +12,26 @@ const initialState = {
   isLoading: false,
 }
 
-export default function LoginScreen({ navigation }) {
+export default function CreateAccountScreen({ navigation }) {
 
+  const [name, setName] = React.useState('');
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const { signIn } = React.useContext(AuthenticationContext);
+  const { signUp } = React.useContext(AuthenticationContext);
 
     return (
       <View style={styles.container}>
-        <Text style={styles.logo}>the robotany</Text>
+        <Text style={styles.logo}>sign up</Text>
+        <View style={styles.inputView} >
+          <TextInput  
+            secureTextEntry
+            style={styles.inputText}
+            placeholder="name..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setName}
+            secureTextEntry />
+        </View>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
@@ -38,18 +49,16 @@ export default function LoginScreen({ navigation }) {
             secureTextEntry />
             {/* onChangeText={text => this.setState({password:text)}/> */}
         </View>
-        <TouchableOpacity>
-          <Text style={styles.forgot}>forgot password?</Text>
-        </TouchableOpacity>
+  
         <TouchableOpacity 
-          style={styles.loginBtn}
-          onPress={() => signIn({ username, password })} >
-          <Text style={styles.loginText}>login</Text>
+          style={styles.loginBtn} 
+          onPress={() => signUp({ username, password })} >
+          <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CreateAccount')} >
-          <Text style={styles.forgot}>create an account</Text>
+          onPress={() => navigation.navigate('SignIn')} >
+          <Text style={styles.forgot}>already have an account? sign-in</Text>
         </TouchableOpacity>
 
       </View>
@@ -71,7 +80,7 @@ const styles = StyleSheet.create({
   },
   inputView:{
     width:"80%",
-    backgroundColor:'#73E367',
+    backgroundColor:'white',
     borderRadius:25,
     height:50,
     marginBottom:20,

@@ -4,19 +4,12 @@ import Card from '../components/Card'
 import VideoCard from '../components/VideoCard'
 import ProgressBar from '../components/ProgressBar'
 
-export default function Home() {
+export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome back, [user-name]</Text>
-      <Card title="Plant Health" text=" [plant-name] is thriving!" />
+      <Text style={styles.header}>Welcome back, username</Text>
+      <Card title="Plant Health" name="Charles" screen="Details" nav={navigation} />
       <VideoCard title="Live Video" />
-
-      {/* <Text style={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-      <Text style={styles.description}>Ut in laoreet orci, id fringilla lacus.</Text>
-      <Text style={styles.description}>Vestibulum varius mauris in eros scelerisque egestas.</Text>
-      <TouchableOpacity style={styles.startBtn}>
-        <Text style={styles.startText}>START NOW</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }
@@ -25,9 +18,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ecf0f1',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
     flexDirection: 'column',
+    margin: 15,
   },
   header:{
     fontWeight:"bold",
@@ -43,7 +37,7 @@ const styles = StyleSheet.create({
   },
   startBtn:{
     backgroundColor:"#90bdff",
-    borderRadius:50,
+    //borderRadius:50,
     padding:10,
     width:"50%",
     alignItems:"center",

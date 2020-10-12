@@ -32,15 +32,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
-      padding: 1,
-      alignItems:"center",
+      flex: 1,
+      //padding: 1,
+      //alignItems:"center",
     },
     video: {
-      height: 200,
-      width: 418,
+      //height: 200,
+      //width: 330,
       borderRadius: 5,
       alignSelf: "center",
-      marginTop: 10,
+      marginTop: 5,
     },
     card:{
       shadowColor: '#000',
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
       borderRadius:15,
       elevation:10,
       padding:10,
-      marginVertical: 10
+      marginVertical: 0
     },
     profileImg:{
       width:30,

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import Stack from './navigation/StackNav';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import HomeScreen from './screens/HomeScreen';
 import PlantScreen from './screens/PlantScreen';
 import LoginScreen from './screens/LoginScreen';
+import CreateAccountScreen from './screens/CreateAccountScreen';
 import AuthenticationContext from './components/AuthContext';
 
 function SplashScreen() {
@@ -16,9 +18,7 @@ function SplashScreen() {
   );
 }
 
-const Stack = createStackNavigator();
-
-export default function App({ navigation }) {
+export default function App() {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -39,6 +39,12 @@ export default function App({ navigation }) {
             ...prevState,
             isSignout: true,
             userToken: null,
+          };
+        case 'SIGN_UP':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
           };
       }
     },
@@ -87,7 +93,7 @@ export default function App({ navigation }) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({ type: 'SIGN_UP', token: 'dummy-auth-token' });
       },
     }),
     []
@@ -101,16 +107,25 @@ export default function App({ navigation }) {
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
           ) : state.userToken == null ? (
-            // No token found, user isn't signed in
-            <Stack.Screen
-              name="SignIn"
-              component={LoginScreen}
-              options={{
-                title: 'Sign in',
-                // When logging out, a pop animation feels intuitive
-                animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-              }}
-            />
+            <>
+              {/* No token found, user isn't signed in*/}
+              <Stack.Screen
+                name="SignIn"
+                component={LoginScreen}
+                options={{
+                  title: 'Sign in',
+                  // When logging out, a pop animation feels intuitive
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen
+                name="CreateAccount"
+                component={CreateAccountScreen}
+                options={{
+                  title: 'Create an Account'
+                }}
+              />
+            </>
           ) : (
             <>
                {/* User is signed in */}
@@ -121,7 +136,7 @@ export default function App({ navigation }) {
               <Stack.Screen 
                 name="Details" 
                 component={PlantScreen}
-                options= {{ headerShown: false }} />
+                options={{ headerShown: false }} />
             </>
           )}
         </Stack.Navigator>
