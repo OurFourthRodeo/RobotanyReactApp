@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity  } from 'react-native';
 import Card from '../components/Card'
 import VideoCard from '../components/VideoCard'
-import ProgressBar from '../components/ProgressBar'
 
 export default function Home({ navigation }) {
   return (
