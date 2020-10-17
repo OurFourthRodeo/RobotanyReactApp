@@ -1,43 +1,71 @@
-import * as React from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import 'react-native-gesture-handler';
+import { validateAll } from 'indicative/validator';
 import AuthenticationContext from '../components/AuthContext';
 
-const initialState = {
-  name: '',
-  username: '',
-  password: '',
-  errors: {},
-  isAuthorized: false,
-  isLoading: false,
-}
-
 export default function CreateAccountScreen({ navigation }) {
-
-  const [name, setName] = React.useState('');
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [emailAddress, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [SignUpErrors, setSignUpErrors] = useState({});
 
   const { signUp } = React.useContext(AuthenticationContext);
+  
+  const handleSignUp = () => {
+    const rules = {
+        email: 'required|email',
+        password: 'required|string|min:6|max:40|confirmed'
+    };
+
+    const data = {
+        email: emailAddress,
+        username: username,
+        password: password,
+        password_confirmation: passwordConfirm
+    };
+
+    const messages = {
+        required: field => `${field} is required`,
+        'username.alpha': 'Username contains unallowed characters',
+        'email.email': 'Please enter a valid email address',
+        'password.min':
+            'Password is too short. Must be greater than 6 characters',
+        'password.confirmed': 'Passwords do not match'
+    };
+
+    validateAll(data, rules, messages)
+        .then(() => {
+            console.log('success sign in');
+            signUp({ emailAddress, password });
+        })
+        .catch(err => {
+            const formatError = {};
+            err.forEach(err => {
+                formatError[err.field] = err.message;
+            });
+            setSignUpErrors(formatError);
+        });
+    };
 
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>sign up</Text>
         <View style={styles.inputView} >
           <TextInput  
-            secureTextEntry
             style={styles.inputText}
-            placeholder="name..." 
+            placeholder="username..." 
             placeholderTextColor="#003f5c"
-            onChangeText={setName}
-            secureTextEntry />
+            onChangeText={setUsername} />
         </View>
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
             placeholder="email..." 
             placeholderTextColor="#003f5c"
-            onChangeText={setUsername}/>
+            errorMessage={SignUpErrors ? SignUpErrors.email : null}
+            onChangeText={setEmail}/>
         </View>
         <View style={styles.inputView} >
           <TextInput  
@@ -49,10 +77,27 @@ export default function CreateAccountScreen({ navigation }) {
             secureTextEntry />
             {/* onChangeText={text => this.setState({password:text)}/> */}
         </View>
-  
+        <View style={styles.inputView} >
+          <TextInput  
+          secureTextEntry
+          style={styles.inputText}
+          placeholder="confirm password..." 
+          placeholderTextColor="#003f5c"
+          onChangeText={setPasswordConfirm}
+          secureTextEntry />
+        </View> 
+
+        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    {SignUpErrors ? SignUpErrors.password : null}
+        </Text>
+        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    {SignUpErrors ? SignUpErrors.email : null}
+        </Text>
+        
         <TouchableOpacity 
           style={styles.loginBtn} 
-          onPress={() => signUp({ username, password })} >
+          // onPress={() => navigation.navigate('AddPlant')} >
+          onPress={() => handleSignUp()} >
           <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity>
 

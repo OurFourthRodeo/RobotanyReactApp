@@ -1,14 +1,16 @@
-import * as React from 'react';
+import React, {useEffect, useContext, useMemo, useReducer} from 'react';
 import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import Stack from './navigation/StackNav';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import axios from "axios";
 
 import HomeScreen from './screens/HomeScreen';
 import PlantScreen from './screens/PlantScreen';
 import LoginScreen from './screens/LoginScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
 import AuthenticationContext from './components/AuthContext';
+import PlantSetup from './screens/PlantSetup';
 
 function SplashScreen() {
   return (
@@ -79,11 +81,7 @@ export default function App() {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
+        
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
@@ -92,6 +90,14 @@ export default function App() {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
+        const newUser = {
+          username: username,
+          email: email,
+          password: password
+        }
+
+        axios.post('https://robotany.queueunderflow.com/api/auth/create', newUser)
+        .then(res => console.log(res.data));
 
         dispatch({ type: 'SIGN_UP', token: 'dummy-auth-token' });
       },
@@ -125,6 +131,10 @@ export default function App() {
                   title: 'Create an Account'
                 }}
               />
+              <Stack.Screen 
+                name="AddPlant"
+                component={PlantSetup}
+                options={{ headerShown: true }} />
             </>
           ) : (
             <>
@@ -137,6 +147,7 @@ export default function App() {
                 name="Details" 
                 component={PlantScreen}
                 options={{ headerShown: false }} />
+
             </>
           )}
         </Stack.Navigator>
@@ -144,22 +155,3 @@ export default function App() {
     </AuthenticationContext.Provider>
   );
 }
-
-// function MainStack() {
-//   return (
-//     <Stack.Navigator 
-//       initialRouteName="Home"
-//     >
-//       <Stack.Screen 
-//         name="Home"
-//         component={HomeScreen}
-//         options={{ headerShown: false }}
-//       />
-//       <Stack.Screen 
-//         name="Login"
-//         component={LoginScreen}
-//         options={{ headerShown: false }}
-//       />
-//     </Stack.Navigator>
-//   );
-// }

@@ -1,12 +1,40 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import Axios from 'axios';
 //import { Card } from '../components/';
 
+const PlantData = props => (
+  <Text> 
+    <Link to={"/edit/"+props.dat._id}>Edit</Link>
+  </Text>
+)
 export default class PlantScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {plantdata: []};
+  }
+
+  componentDidMount() {
+    Axios.get('https://robotany.queueunderflow.com/')
+      .then(response => {
+        this.setState({plantdata: response.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
+  displayData() {
+    return this.state.plantdata.map(function(currentData, i) {
+      return <PlantData dat={currentData} key={i} />
+    })
+  }
+
   render(){
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Plant Details</Text>
+        <Text> {  this.displayData() } </Text>
       </View>
     );
   }

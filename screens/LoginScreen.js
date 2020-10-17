@@ -11,6 +11,32 @@ const initialState = {
   isLoading: false,
 }
 
+
+// onSubmit() {
+//   // //e.preventDefault();
+
+//   // console.log(`Form submitted`);
+//   // console.log(`Plant Name: ${this.state.plant_name}`);
+//   // console.log(`Plant Type: ${this.state.plant_type}`);
+
+//   const newUser = {
+//     username: this.state.plant_name,
+//     email: this.state.plant_type,
+//     password: "pass"
+//   }
+
+//   axios.post('https://robotany.queueunderflow.com/api/auth/create', newPlant)
+//       .then(res => console.log(res.data));
+
+//   this.setState({
+//     plant_name: '',
+//     plant_type: ''
+//   })
+
+//   //navigation.navigate("Dashboard");
+
+// }
+
 export default function LoginScreen({ navigation }) {
 
   const [username, setUsername] = React.useState('');
