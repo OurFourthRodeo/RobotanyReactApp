@@ -1,110 +1,53 @@
-import * as React from 'react';
-import {Component} from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import 'react-native-gesture-handler';
 import AuthenticationContext from '../components/AuthContext';
-import axios from 'axios';
 
-const initialState = {
-  name: '',
-  username: '',
-  password: '',
-  errors: {},
-  isAuthorized: false,
-  isLoading: false,
-}
+// POST: will post plant credentials to database
 
-export default class CreateAccountScreen extends Component {
+export default function PlantSetup({ navigation }) {
+  const [plantName, setName] = useState('');
+  const [plantType, setType] = useState('');
 
-  constructor(props) {
-    super(props);
+  const { setupPlant } = React.useContext(AuthenticationContext);
 
-    this.onChangePlantName = this.onChangePlantName.bind(this);
-    this.onChangePlantType = this.onChangePlantType.bind(this);
-
-    this.onSubmit = this.onSubmit.bind(this);
-
-    this.state = {
-      plant_name: '',
-      plant_type: '',
-    }
-  }
-
-  onChangePlantName(e) {
-    this.setState({
-      plant_name: e.target.value
-    });
-  }
-
-  onChangePlantType(e) {
-    this.setState({
-      plant_type: e.target.value
-    });
-  }
-
-  onSubmit() {
-    //e.preventDefault();
-
+  const onSubmit = () => {
     console.log(`Form submitted`);
-    console.log(`Plant Name: ${this.state.plant_name}`);
-    console.log(`Plant Type: ${this.state.plant_type}`);
+    console.log(`Plant Name: ${plantName}`);
+    console.log(`Plant Type: ${plantType}`);
 
-    const newPlant = {
-      username: this.state.plant_name,
-      email: this.state.plant_type,
-      password: "pass"
-    }
-
-    axios.post('https://robotany.queueunderflow.com/api/auth/create', newPlant)
-        .then(res => console.log(res.data));
-
-    this.setState({
-      plant_name: '',
-      plant_type: ''
-    })
-
-    //navigation.navigate("Dashboard");
-
+    setupPlant({plantName, plantType});
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.logo}>add your plant</Text>
-        <form onSubmit={this.onSubmit}>
-          <View style={styles.inputView} >
-            <TextInput  
-              style={styles.inputText}
-              placeholder="name..." 
-              placeholderTextColor="#003f5c"
-              value={this.state.plant_name}
-              onChangeText={text => this.setState({plant_name: text})} />
+  return (
+    <View style={styles.container}>
+      <Text style={styles.logo}>add your plant</Text>
 
-          {/* <input type="text"
-                 className="form-control"
-                 value={this.state.plant_name}
-                 onChange={this.onChangePlantName}
-          /> */}
-          </View>
-          <View style={styles.inputView} >
-            <TextInput  
-              style={styles.inputText}
-              placeholder="type..." 
-              placeholderTextColor="#003f5c"
-              onChangeText={text => this.setState({plant_type: text})}
-              value={this.state.plant_type} />
-          </View>
-          <TouchableOpacity 
-            type="submit"
-            style={styles.loginBtn} 
-            onPress={() => this.onSubmit()} >
-            <Text style={styles.loginText}>connect your plant</Text>
-         </TouchableOpacity> 
-         {/* <input type="submit" value="add plant" className="btn btn-primary" /> */}
-        </form>
-      </View>
-    );
-  }
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="name..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setName} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="type..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setType} />
+        </View>
+
+        <TouchableOpacity 
+          type="submit"
+          style={styles.loginBtn} 
+          onPress={() => onSubmit()} >
+          <Text style={styles.loginText}>connect your plant</Text>
+        </TouchableOpacity> 
+
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

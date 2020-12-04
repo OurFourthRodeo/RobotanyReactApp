@@ -1,48 +1,47 @@
-import * as React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import 'react-native-gesture-handler';
+import { validateAll } from 'indicative/validator';
 import AuthenticationContext from '../components/AuthContext';
 
-const initialState = {
-  username: '',
-  password: '',
-  errors: {},
-  isAuthorized: false,
-  isLoading: false,
-}
-
-
-// onSubmit() {
-//   // //e.preventDefault();
-
-//   // console.log(`Form submitted`);
-//   // console.log(`Plant Name: ${this.state.plant_name}`);
-//   // console.log(`Plant Type: ${this.state.plant_type}`);
-
-//   const newUser = {
-//     username: this.state.plant_name,
-//     email: this.state.plant_type,
-//     password: "pass"
-//   }
-
-//   axios.post('https://robotany.queueunderflow.com/api/auth/create', newPlant)
-//       .then(res => console.log(res.data));
-
-//   this.setState({
-//     plant_name: '',
-//     plant_type: ''
-//   })
-
-//   //navigation.navigate("Dashboard");
-
-// }
-
 export default function LoginScreen({ navigation }) {
-
-  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [SignUpErrors, setSignUpErrors] = useState({});
 
-  const { signIn } = React.useContext(AuthenticationContext);
+  const { signIn, signUp } = React.useContext(AuthenticationContext);
+
+  const handleSignIn = () => {
+    const rules = {
+        email: 'required|email',
+        password: 'required|string|min:6|max:40'
+    };
+
+    const data = {
+        email: email,
+        password: password
+    };
+
+    const messages = {
+        required: field => `${field} is required`,
+        'username.alpha': 'Username contains unallowed characters',
+        'email.email': 'Please enter a valid email address',
+        'password.min': 'Wrong Password?'
+    };
+
+    validateAll(data, rules, messages)
+        .then(() => {
+            console.log('success sign in');
+            signIn({ email, password });
+        })
+        .catch(err => {
+            const formatError = {};
+            err.forEach(err => {
+                formatError[err.field] = err.message;
+            });
+            setSignUpErrors(formatError);
+        });
+    };
 
     return (
       <View style={styles.container}>
@@ -52,7 +51,7 @@ export default function LoginScreen({ navigation }) {
             style={styles.inputText}
             placeholder="email..." 
             placeholderTextColor="#003f5c"
-            onChangeText={setUsername}/>
+            onChangeText={setEmail}/>
         </View>
         <View style={styles.inputView} >
           <TextInput  
@@ -62,19 +61,27 @@ export default function LoginScreen({ navigation }) {
             placeholderTextColor="#003f5c"
             onChangeText={setPassword}
             secureTextEntry />
-            {/* onChangeText={text => this.setState({password:text)}/> */}
         </View>
+
         <TouchableOpacity>
           <Text style={styles.forgot}>forgot password?</Text>
         </TouchableOpacity>
+
+        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    {SignUpErrors ? SignUpErrors.email : null}
+        </Text>
+        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    {SignUpErrors ? SignUpErrors.password : null}
+        </Text>
+
         <TouchableOpacity 
           style={styles.loginBtn}
-          onPress={() => signIn({ username, password })} >
+          onPress={() => handleSignIn()} >
           <Text style={styles.loginText}>login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CreateAccount')} >
+          onPress={() => signUp()} >
           <Text style={styles.forgot}>create an account</Text>
         </TouchableOpacity>
 

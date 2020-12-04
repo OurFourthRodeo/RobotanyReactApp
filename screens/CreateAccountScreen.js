@@ -4,6 +4,8 @@ import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
 import AuthenticationContext from '../components/AuthContext';
 
+// POST: will post credentials to database, recieve success/fail
+
 export default function CreateAccountScreen({ navigation }) {
   const [emailAddress, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -11,7 +13,7 @@ export default function CreateAccountScreen({ navigation }) {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [SignUpErrors, setSignUpErrors] = useState({});
 
-  const { signUp } = React.useContext(AuthenticationContext);
+  const { signUp, signIn } = React.useContext(AuthenticationContext);
   
   const handleSignUp = () => {
     const rules = {
@@ -38,7 +40,7 @@ export default function CreateAccountScreen({ navigation }) {
     validateAll(data, rules, messages)
         .then(() => {
             console.log('success sign in');
-            signUp({ emailAddress, password });
+            signUp({ username, emailAddress, password });
         })
         .catch(err => {
             const formatError = {};
@@ -59,14 +61,15 @@ export default function CreateAccountScreen({ navigation }) {
             placeholderTextColor="#003f5c"
             onChangeText={setUsername} />
         </View>
+        
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
             placeholder="email..." 
             placeholderTextColor="#003f5c"
-            errorMessage={SignUpErrors ? SignUpErrors.email : null}
             onChangeText={setEmail}/>
         </View>
+
         <View style={styles.inputView} >
           <TextInput  
             secureTextEntry
@@ -77,6 +80,7 @@ export default function CreateAccountScreen({ navigation }) {
             secureTextEntry />
             {/* onChangeText={text => this.setState({password:text)}/> */}
         </View>
+
         <View style={styles.inputView} >
           <TextInput  
           secureTextEntry
@@ -97,12 +101,13 @@ export default function CreateAccountScreen({ navigation }) {
         <TouchableOpacity 
           style={styles.loginBtn} 
           // onPress={() => navigation.navigate('AddPlant')} >
-          onPress={() => handleSignUp()} >
+          //onPress={() => handleSignUp()} >
+          onPress={() => signUp({ username, emailAddress, password })} >
           <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('SignIn')} >
+          onPress={() => signIn()} >
           <Text style={styles.forgot}>already have an account? sign-in</Text>
         </TouchableOpacity>
 

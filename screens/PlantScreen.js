@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'rea
 import Axios from 'axios';
 //import { Card } from '../components/';
 
+// GET: will recieve data from database
+
 const PlantData = props => (
   <Text> 
     <Link to={"/edit/"+props.dat._id}>Edit</Link>

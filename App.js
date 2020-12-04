@@ -1,3 +1,4 @@
+// imports
 import React, {useEffect, useContext, useMemo, useReducer} from 'react';
 import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -5,12 +6,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import axios from "axios";
 
+// screens
 import HomeScreen from './screens/HomeScreen';
 import PlantScreen from './screens/PlantScreen';
 import LoginScreen from './screens/LoginScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
-import AuthenticationContext from './components/AuthContext';
 import PlantSetup from './screens/PlantSetup';
+
+// authentication context
+import AuthenticationContext from './components/AuthContext';
+import {reducer, initialState} from './reducer';
+import {stateConditionString} from './components/helpers';
+
+const Stack = createStackNavigator();
 
 function SplashScreen() {
   return (
@@ -20,44 +28,31 @@ function SplashScreen() {
   );
 }
 
-export default function App() {
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-        case 'SIGN_UP':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    }
-  );
+// This is the home stack, accessible once you have successfully
+// logged in our created an account. 
+const createHomeStack = () => {
+  const {signOut} = useContext(AuthenticationContext);
 
-  React.useEffect(() => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home Screen"
+        component={HomeScreen}
+        initialParams={{signOut: signOut}}
+      />
+      <Stack.Screen
+        name="Plant Details"
+        component={PlantScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+
+
+export default function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
@@ -69,89 +64,188 @@ export default function App() {
       }
 
       // After restoring token, we may need to validate it in production apps
-
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
-
     bootstrapAsync();
   }, []);
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async data => {
-        
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signIn: async (data) => {
+
+        if (
+          data &&
+          data.emailAddress !== undefined &&
+          data.password !== undefined
+        ) {
+          const returningUser = {
+            email: data.email,
+            password: data.password
+          }
+          console.log(data.email);
+          console.log(data.password);
+  
+          // check sign-in credentials with database
+          axios.post('https://robotany.queueunderflow.com/api/auth/create', returningUser)
+              .then(res => console.log(res.data));
+              // TODO: reponse fail/succ
+            
+          // send to HomeScreen
+          dispatch({type: 'SIGN_IN', token: 'Token-For-Now'});
+
+        } else {
+          dispatch({type: 'TO_SIGNIN_PAGE'});
+        }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-        const newUser = {
-          username: username,
-          email: email,
-          password: password
+      signOut: async (data) => {
+        dispatch({type: 'SIGN_OUT'});
+      },
+      signUp: async (data) => {
+        if (
+          data &&
+          data.emailAddress !== undefined &&
+          data.password !== undefined
+        ) {
+          const newUser = {
+            username: data.username,
+            email: data.emailAddress,
+            password: data.password
+          }
+          console.log(data.username);
+          console.log(data.emailAddress);
+          console.log(data.password);
+
+          // send new login credentials to database
+          axios.post('https://robotany.queueunderflow.com/api/auth/create', newUser)
+              .then(res => console.log(res.data));
+
+          // send to PlantSetup page
+          dispatch({type: 'SIGNED_UP', token: 'dummy-auth-token'});
+        } else {
+          dispatch({type: 'TO_SIGNUP_PAGE'});
+        }
+      },
+      setupPlant: async (data) => {
+        if (
+          data &&
+          data.plantName !== undefined &&
+          data.plantType !== undefined
+        ){ 
+        const newPlant = {
+          plant_name: data.plantName,
+          plant_type: data.plantType,
         }
 
-        axios.post('https://robotany.queueunderflow.com/api/auth/create', newUser)
-        .then(res => console.log(res.data));
-
-        dispatch({ type: 'SIGN_UP', token: 'dummy-auth-token' });
-      },
+        // send plant name and type to database
+        axios.post('https://robotany.queueunderflow.com/api/data/newplant', newPlant)
+            .then(res => console.log(res.data));
+    
+        dispatch({type: 'SIGN_IN', token: 'Token-For-Now'});
+       } else {
+          dispatch({type: 'SIGNED_UP', token: 'dummy-auth-token'});
+        }
+      }
     }),
     []
   );
+
+  const chooseScreen = (state) => {
+    let navigateTo = 'LOAD_HOME'; //stateConditionString(state);
+    let arr = [];
+
+    switch (navigateTo) {
+      case 'LOAD_APP':
+        arr.push(<Stack.Screen name="Splash" component={SplashScreen} />);
+        break;
+      case 'LOAD_SIGNUP':
+        arr.push(
+          <Stack.Screen
+            name="SignUp"
+            component={CreateAccountScreen}
+            options={{
+              title: 'Sign Up',
+              animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+            }}
+          />,
+        );
+        break;
+      case 'LOAD_SIGNIN':
+        arr.push(<Stack.Screen name="SignIn" component={LoginScreen} />);
+        break;
+      case 'TO_SETUP_PAGE':
+        arr.push(<Stack.Screen name="PlantSetup" component={PlantSetup} />);
+        break;
+      case 'LOAD_HOME':
+        arr.push(
+          <Stack.Screen
+            name="Home"
+            component={createHomeStack}
+            options={{
+              title: 'Home Screen Parent',
+              headerStyle: {backgroundColor: 'black'},
+              headerTintColor: 'white',
+            }}
+          />,
+        );
+        break;
+      default:
+        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
+        break;
+    }
+    return arr[0];
+  };
 
   return (
     <AuthenticationContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator>
-          {state.isLoading ? (
-            // We haven't finished checking for the token yet
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
-            <>
-              {/* No token found, user isn't signed in*/}
-              <Stack.Screen
-                name="SignIn"
-                component={LoginScreen}
-                options={{
-                  title: 'Sign in',
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                }}
-              />
-              <Stack.Screen
-                name="CreateAccount"
-                component={CreateAccountScreen}
-                options={{
-                  title: 'Create an Account'
-                }}
-              />
-              <Stack.Screen 
-                name="AddPlant"
-                component={PlantSetup}
-                options={{ headerShown: true }} />
-            </>
-          ) : (
-            <>
-               {/* User is signed in */}
-              <Stack.Screen 
-                name="Dashboard" 
-                component={HomeScreen} 
-                options={{ headerShown: true }} />
-              <Stack.Screen 
-                name="Details" 
-                component={PlantScreen}
-                options={{ headerShown: false }} />
-
-            </>
-          )}
+          {chooseScreen(state)}
         </Stack.Navigator>
       </NavigationContainer>
     </AuthenticationContext.Provider>
   );
 }
+
+// {state.isLoading ? (
+//   // We haven't finished checking for the token yet
+//   <Stack.Screen name="Splash" component={SplashScreen} />
+// ) : state.userToken == null ? (
+//   <>
+//     {/* No token found, user isn't signed in*/}
+//     <Stack.Screen
+//       name="SignIn"
+//       component={LoginScreen}
+//       options={{
+//         title: 'Sign in',
+//         // When logging out, a pop animation feels intuitive
+//         animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+//       }}
+//     />
+//     <Stack.Screen
+//       name="CreateAccount"
+//       component={CreateAccountScreen}
+//       options={{
+//         title: 'Create an Account'
+//       }}
+//     />
+//     <Stack.Screen 
+//       name="AddPlant"
+//       component={PlantSetup}
+//       options={{ headerShown: true }} />
+//   </>
+// ) : (
+//   <>
+//      {/* User is signed in */}
+//     <Stack.Screen 
+//       name="Dashboard" 
+//       component={HomeScreen} 
+//       options={{ headerShown: true }} />
+//     <Stack.Screen 
+//       name="Details" 
+//       component={PlantScreen}
+//       options={{ headerShown: false }} />
+
+//   </>
+// )}

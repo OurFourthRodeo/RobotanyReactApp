@@ -4,24 +4,22 @@ import Constants from 'expo-constants';
 import { Video } from 'expo-av';
 const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 
-const VideoCard = (props) => {
+const ImageCard = (props) => {
     return (
         <View style={styles.container}>
           <View style={styles.card}>
             <View style={styles.header}>
               <Image style={styles.profileImg} source={{uri: profileImg}} />
-              <Text style={{fontWeight:"bold",fontSize:18}}> {props.title} </Text>          
+              <Text style={{fontWeight:"bold",fontSize:24}}> {props.title} </Text>          
             </View>
-            <Video
-                source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                shouldPlay
-                isLooping
-                style={styles.video}
-              />  
+            <Image
+              source={{ 
+                width: "80%",
+                height: 600,
+                uri: 'https://picsum.photos/1200/600' 
+              }}
+              style={styles.video}
+            />  
           </View>
         </View>
     );
@@ -32,13 +30,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
-      flex: 1,
-      //padding: 1,
-      //alignItems:"center",
+      //flex: 1,
     },
     video: {
-      //height: 200,
-      //width: 330,
       borderRadius: 5,
       alignSelf: "center",
       marginTop: 5,
@@ -59,15 +53,16 @@ const styles = StyleSheet.create({
       width:30,
       height:30,
       borderRadius:50,
-      marginRight:10,
+      marginRight:5,
     },
     header: {
       flexDirection:"row",
+      //backgroundColor: "blue",
     }
 });
 
 
-export default VideoCard;
+export default ImageCard;
 
 // const styles = StyleSheet.create({
 //     container: {
