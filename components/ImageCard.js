@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       alignSelf: "center",
       marginTop: 5,
+      resizeMode: 'contain',
     },
     card:{
       shadowColor: '#000',

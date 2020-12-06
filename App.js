@@ -3,12 +3,13 @@ import React, {useEffect, useContext, useMemo, useReducer} from 'react';
 import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import axios from "axios";
 
 // screens
 import HomeScreen from './screens/HomeScreen';
 import PlantScreen from './screens/PlantScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
 import PlantSetup from './screens/PlantSetup';
@@ -17,6 +18,7 @@ import PlantSetup from './screens/PlantSetup';
 import AuthenticationContext from './components/AuthContext';
 import {reducer, initialState} from './reducer';
 import {stateConditionString} from './components/helpers';
+import createHomeStack from './HomeStack';
 
 const Stack = createStackNavigator();
 
@@ -27,27 +29,6 @@ function SplashScreen() {
     </View>
   );
 }
-
-// This is the home stack, accessible once you have successfully
-// logged in our created an account. 
-const createHomeStack = () => {
-  const {signOut} = useContext(AuthenticationContext);
-
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home Screen"
-        component={HomeScreen}
-        initialParams={{signOut: signOut}}
-      />
-      <Stack.Screen
-        name="Plant Details"
-        component={PlantScreen}
-      />
-    </Stack.Navigator>
-  );
-};
-
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -152,7 +133,7 @@ export default function App() {
   );
 
   const chooseScreen = (state) => {
-    let navigateTo = 'LOAD_HOME'; //stateConditionString(state);
+    let navigateTo = 'LOAD_HOME';//stateConditionString(state);
     let arr = [];
 
     switch (navigateTo) {
@@ -183,9 +164,7 @@ export default function App() {
             name="Home"
             component={createHomeStack}
             options={{
-              title: 'Home Screen Parent',
-              headerStyle: {backgroundColor: 'black'},
-              headerTintColor: 'white',
+              headerShown: false
             }}
           />,
         );
