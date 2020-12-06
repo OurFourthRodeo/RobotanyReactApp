@@ -2,25 +2,19 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import AuthenticationContext from '../components/AuthContext'
-
-export default function ProfileScreen ({navigation}) {
-    const {signOut} = useContext(AuthenticationContext);
+export default function BotSetup ({navigation}) {
 
     return (
         <SafeAreaView>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Profile</Text>
-                </View>
-                <TouchableOpacity
-                    onPress={() => signOut('data')} >
-                    <Text style={styles.logOutButton}>log out</Text>
-                </TouchableOpacity>            
+                    <Text style={styles.title}>WiFi Provisioning</Text>
+                </View>         
             </View>
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {

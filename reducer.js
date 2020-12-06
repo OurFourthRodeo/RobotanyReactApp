@@ -1,66 +1,28 @@
-export const reducer = (prevState, action) => {
+//Action Types
+export const LOGGED_IN = `auth/LOGGED_IN`;
+export const LOGGED_OUT = `auth/LOGGED_OUT`;
+
+export const  initialState = {
+    isLoggedIn: false,
+    user: null
+};
+
+//REDUCER
+const authReducer = (state = initialState, action) => {
     switch (action.type) {
-      case 'TO_SIGNUP_PAGE':
-        return {
-          ...prevState,
-          isLoading: false,
-          isSignedUp: false,
-          plantIsSetup: false,
-          noAccount: true,
-        };
-      case 'TO_SIGNIN_PAGE':
-        return {
-          ...prevState,
-          isLoading: false,
-          isSignedIn: false,
-          plantIsSetup: false,
-          noAccount: false,
-        };
-      case 'TO_SETUP_PAGE':
-        return {
-          ...prevState,
-          isLoading: false,
-          isSignedIn: true,
-          plantIsSetup: false,
-          noAccount: false,
-        };
-      case 'RESTORE_TOKEN':
-        return { 
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'SIGNED_UP':
-        return {
-          ...prevState,
-          isSignedIn: true,
-          isSignedUp: true,
-          plantIsSetup: false,
-          isLoading: false,
-          userToken: action.token,
-        };
-      case 'SIGN_IN':
-        return {
-          ...prevState,
-          isSignedOut: false,
-          isSignedIn: true,
-          plantIsSetup: true,
-          isSignedUp: true,
-          userToken: action.token,
-        };
-      case 'SIGN_OUT':
-        return {
-          ...prevState,
-          isSignedOut: true,
-        };
+        case LOGGED_IN:{
+            let { user } = action;
+
+            return {...state, isLoggedIn: true, user};
+        }
+
+        case LOGGED_OUT:{
+            return {...state, ...initialState};
+        }
+
+        default:
+            return state;
     }
-  };
-  
-  export const initialState = {
-    isLoading: true,
-    isSignedOut: false,
-    isSignedUp: false,
-    noAccount: false,
-    isSignedIn: false,
-    userToken: null,
-  };
+};
+
+export default authReducer;

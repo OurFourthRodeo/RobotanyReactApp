@@ -15,9 +15,9 @@ const ImageCard = (props) => {
             <Image
               style={styles.video}
               source={{ 
-                width: "80%",
-                height: 200,
-                uri: 'https://picsum.photos/1200/600' 
+                uri: 'https://picsum.photos/1200/600', 
+                //width: "80%",
+                //height: 200,
               }}
             />  
           </View>

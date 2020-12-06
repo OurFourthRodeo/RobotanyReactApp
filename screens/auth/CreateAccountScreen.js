@@ -1,21 +1,41 @@
-import React, { useEffect, useState, useContext} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
-import AuthenticationContext from '../components/AuthContext';
 
-// POST: will post credentials to database, recieve success/fail
+import * as api from "../../services/Auth";
 
-export default function CreateAccountScreen({ navigation }) {
+export default function CreateAccountScreen(props) {
+  const { navigation } = props;
+
+  // user credentials 
   const [emailAddress, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [SignUpErrors, setSignUpErrors] = useState({});
 
-  const { signUp, signIn } = React.useContext(AuthenticationContext);
+  // errors and loading
+  const [SignUpErrors, setSignUpErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   
-  const handleSignUp = () => {
+  async function sendToAPI(data) {
+    setLoading(true);
+
+    try {
+      let response = await api.signup(username, emailAddress, password);
+      setLoading(false);
+
+      // send to plant setup
+      console.log("sent to API")
+      navigation.replace("SetupPlant");
+
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
+    }
+  }
+
+  const onSubmit = () => {
     const rules = {
         email: 'required|email',
         password: 'required|string|min:6|max:40|confirmed'
@@ -39,8 +59,7 @@ export default function CreateAccountScreen({ navigation }) {
 
     validateAll(data, rules, messages)
         .then(() => {
-            console.log('success sign in');
-            signUp({ username, emailAddress, password });
+            sendToAPI({ username, emailAddress, password });
         })
         .catch(err => {
             const formatError = {};
@@ -78,7 +97,6 @@ export default function CreateAccountScreen({ navigation }) {
             placeholderTextColor="#003f5c"
             onChangeText={setPassword}
             secureTextEntry />
-            {/* onChangeText={text => this.setState({password:text)}/> */}
         </View>
 
         <View style={styles.inputView} >
@@ -100,14 +118,13 @@ export default function CreateAccountScreen({ navigation }) {
         
         <TouchableOpacity 
           style={styles.loginBtn} 
-          // onPress={() => navigation.navigate('AddPlant')} >
-          //onPress={() => handleSignUp()} >
-          onPress={() => signUp({ username, emailAddress, password })} >
+          onPress={() => navigation.replace("SetupPlant")} >
+          {/* onSubmit({ username, emailAddress, password })} > */}
           <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => signIn()} >
+          onPress={() => navigation.replace("SignIn")} >
           <Text style={styles.forgot}>already have an account? sign-in</Text>
         </TouchableOpacity>
 

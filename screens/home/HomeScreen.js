@@ -1,17 +1,21 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, Text, Button, View, TouchableOpacity  } from 'react-native';
-import Card from '../components/Card'
-import ImageCard from '../components/ImageCard'
-import AuthenticationContext from '../components/AuthContext';
+import Card from '../../components/Card'
+import ImageCard from '../../components/ImageCard'
 
-export default function Home({ navigation }) {
-  const { signOut } = React.useContext(AuthenticationContext);
+import { useAuth } from "../../provider/Auth"
+
+export default function Home(props) {
+  const { navigate } = props.navigation;
+
+  const { state, handleLogout } = useAuth();
+  const user = state.user;
 
   return (
     <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.title}>Welcome back, username</Text>
+            <Text style={styles.title}>Welcome ${user.</Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate("Plant Details")}>
             <Card title="Plant Health" name="Charles" />

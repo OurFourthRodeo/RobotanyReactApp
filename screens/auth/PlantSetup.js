@@ -1,22 +1,32 @@
 import React, { useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import 'react-native-gesture-handler';
-import AuthenticationContext from '../components/AuthContext';
 
-// POST: will post plant credentials to database
+import * as api from '../../services/Auth';
 
-export default function PlantSetup({ navigation }) {
+export default function PlantSetup(props) {
+  const { navigation } = props;
+  const { navigate } = navigation;
+
+  // state variables
   const [plantName, setName] = useState('');
   const [plantType, setType] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const { setupPlant } = React.useContext(AuthenticationContext);
-
-  const onSubmit = () => {
+  async function onSubmit() {
     console.log(`Form submitted`);
-    console.log(`Plant Name: ${plantName}`);
-    console.log(`Plant Type: ${plantType}`);
+    setLoading(true);
 
-    setupPlant({plantName, plantType});
+    try {
+      let response = await api.addPlant(plantName, plantType);
+      setLoading(false);
+
+      navigate('Home');
+  
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,7 +52,9 @@ export default function PlantSetup({ navigation }) {
         <TouchableOpacity 
           type="submit"
           style={styles.loginBtn} 
-          onPress={() => onSubmit()} >
+          onPress={() => navigate('Home')} >
+          {/*  onPress={() => onSubmit()} */}
+          
           <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity> 
 

@@ -1,20 +1,48 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
-import AuthenticationContext from '../components/AuthContext';
 
-export default function LoginScreen({ navigation }) {
+import * as api from "../../services/Auth";
+import { useAuth } from "../../provider/Auth";
+
+export default function LoginScreen(props) {
+  const { navigation } = props;
+  const { navigate } = navigation;
+
+  // variables
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  // sign in and errors
   const [SignUpErrors, setSignUpErrors] = useState({});
+  const { handleLogin } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  const { signIn, signUp } = React.useContext(AuthenticationContext);
+  async function sendToAPI(data) {
+    setLoading(true);
 
-  const handleSignIn = () => {
+    try {
+      let response = await api.signin(data);
+      await handleLogin(reponse);
+
+      setLoading(false);
+
+      // check if username is null
+      let username = (response.user.username !== null);
+      if (username) navigate('Home');
+      else navigation.replace('SignIn');
+
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
+    }
+  }
+
+  const onSubmit = () => {
     const rules = {
         email: 'required|email',
-        password: 'required|string|min:6|max:40'
+        password: 'required|string|min:6|max:40' 
     };
 
     const data = {
@@ -32,7 +60,7 @@ export default function LoginScreen({ navigation }) {
     validateAll(data, rules, messages)
         .then(() => {
             console.log('success sign in');
-            signIn({ email, password });
+            sendToAPI(data);
         })
         .catch(err => {
             const formatError = {};
@@ -76,12 +104,12 @@ export default function LoginScreen({ navigation }) {
 
         <TouchableOpacity 
           style={styles.loginBtn}
-          onPress={() => handleSignIn()} >
+          onPress={() => onSubmit()} >
           <Text style={styles.loginText}>login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => signUp()} >
+          onPress={() => navigation.replace("SignUp")} >
           <Text style={styles.forgot}>create an account</Text>
         </TouchableOpacity>
 
