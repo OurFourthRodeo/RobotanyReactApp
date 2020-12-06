@@ -133,7 +133,7 @@ export default function App() {
   );
 
   const chooseScreen = (state) => {
-    let navigateTo = 'LOAD_HOME';//stateConditionString(state);
+    let navigateTo = stateConditionString(state);
     let arr = [];
 
     switch (navigateTo) {

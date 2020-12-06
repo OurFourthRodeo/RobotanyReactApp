@@ -14,9 +14,9 @@ export default function Home({ navigation }) {
             <Text style={styles.title}>Welcome back, username</Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate("Plant Details")}>
-            <Card style={{flex: 1}} title="Plant Health" name="Charles" />
+            <Card title="Plant Health" name="Charles" />
           </TouchableOpacity>
-          <ImageCard style={{flex: 1}} title="Live Video" />
+          <ImageCard title="Live Video" />
         </View>
     </SafeAreaView>
   );
@@ -25,25 +25,24 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      backgroundColor: '#ecf0f1',
       alignItems: 'stretch',
       justifyContent: 'center',
       flexDirection: 'column',
-      margin: 15,
+      margin: 5,
     },
   title:{
       fontWeight:"bold",
-      fontSize:24,
+      fontSize:30,
       color:"#375177",
       //alignSelf:"flex-start",
-      margin: 15,
+      margin: 5,
   },
   logOutButton:{
       //alignSelf:"flex-end",
       //justifyContent: "flex-end",
   },
   header:{
-    backgroundColor: "white",
+    //backgroundColor: "white",
     alignContent: "space-between",
     flexDirection: 'row',
     justifyContent: 'space-between',

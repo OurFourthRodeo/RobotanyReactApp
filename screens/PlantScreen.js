@@ -19,25 +19,23 @@ export default function PlantScreen() {
         <View style={styles.header}>
           <Text style={styles.title}>Plant Details</Text>
         </View>
-        {/* <Image
+        <Image
           source={{ 
             width: "80%",
             height: 200,
             uri: 'https://picsum.photos/1200/600' 
           }}
           style={styles.image}
-        />   */}
+        />  
 
       </View>
     </SafeAreaView>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      backgroundColor: '#ecf0f1',
       alignItems: 'stretch',
       justifyContent: 'center',
       flexDirection: 'column',
@@ -45,17 +43,16 @@ const styles = StyleSheet.create({
     },
   title:{
       fontWeight:"bold",
-      fontSize:24,
+      fontSize:30,
       color:"#375177",
-      alignSelf:"flex-start",
-      margin: 15,
+      margin: 10,
   },
   logOutButton:{
       alignSelf:"flex-end",
       justifyContent: "flex-end",
   },
   header:{
-      backgroundColor: "white",
+      //backgroundColor: "white",
       flexDirection: "row",
   },
   image: {

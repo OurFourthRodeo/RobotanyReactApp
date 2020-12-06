@@ -13,12 +13,12 @@ const ImageCard = (props) => {
               <Text style={{fontWeight:"bold",fontSize:24}}> {props.title} </Text>          
             </View>
             <Image
+              style={styles.video}
               source={{ 
                 width: "80%",
-                height: 600,
+                height: 200,
                 uri: 'https://picsum.photos/1200/600' 
               }}
-              style={styles.video}
             />  
           </View>
         </View>
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
-      //flex: 1,
     },
     video: {
       borderRadius: 5,

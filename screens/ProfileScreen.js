@@ -25,25 +25,25 @@ export default function ProfileScreen ({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ecf0f1',
         alignItems: 'stretch',
         justifyContent: 'center',
         flexDirection: 'column',
-        margin: 15,
+        margin: 5,
       },
     title:{
         fontWeight:"bold",
-        fontSize:24,
+        fontSize:30,
         color:"#375177",
         alignSelf:"flex-start",
         margin: 15,
     },
     logOutButton:{
         color:'#73E367',
-        fontSize: '20',
+        fontSize: 20,
+        margin: 10,
     },
     header:{
-        backgroundColor: "white",
+        //backgroundColor: "white",
         flexDirection: "row",
     },
     image: {
