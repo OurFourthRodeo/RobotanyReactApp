@@ -6,24 +6,28 @@ import * as api from '../../services/Auth';
 
 export default function ProfileScreen(props) {
     const { navigate } = props.navigation;
-    const user = state.user;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Profile</Text>
+        <SafeAreaView style={styles.safearea}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Profile</Text>
+                </View>
+                <TouchableOpacity
+                    onPress={() => {
+                        api.logout("nothing");
+                        navigate('Auth', { screen: "SignIn" }); }}>
+                    <Text style={styles.logOutButton}>log out</Text>
+                </TouchableOpacity>            
             </View>
-            <TouchableOpacity
-                onPress={() => {
-                    api.logout("nothing");
-                    navigate('Auth', { screen: "SignIn" }); }}>
-                <Text style={styles.logOutButton}>log out</Text>
-            </TouchableOpacity>            
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safearea:{
+        flex: 1,
+    },
     container: {
         flex: 1,
         alignItems: 'stretch',

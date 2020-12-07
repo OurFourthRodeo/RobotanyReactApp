@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, Text, Button, View, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 import Card from '../../components/Card'
 import ImageCard from '../../components/ImageCard'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from "../../provider/Auth"
 
@@ -12,7 +13,7 @@ export default function Home(props) {
   const user = state.user;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safearea}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>Welcome</Text>
@@ -27,10 +28,13 @@ export default function Home(props) {
 }
 
 const styles = StyleSheet.create({
+  safearea:{
+    flex: 1,
+  },
   container: {
       flex: 1,
       alignItems: 'stretch',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       flexDirection: 'column',
       margin: 5,
     },

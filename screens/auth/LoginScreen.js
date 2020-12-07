@@ -48,7 +48,6 @@ export default function LoginScreen(props) {
         username: username,
         password: password
     };
-    sendToAPI(data);
 
     const messages = {
         required: field => `${field} is required`,

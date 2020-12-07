@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import ProgressBar from '../../components/ProgressBar'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const testData = [
   { bgcolor: "#06c258", completed: 60 },
@@ -8,24 +9,29 @@ const testData = [
 
 export default function PlantScreen() {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Plant Details</Text>
+    <SafeAreaView style={styles.safearea}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Plant Details</Text>
+        </View>
+        <Image
+          source={{ 
+            uri: 'https://picsum.photos/1200/600' 
+          }}
+          style={styles.image}
+        />  
+          {testData.map((item, idx) => (
+            <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
+          ))}
       </View>
-      <Image
-        source={{ 
-          uri: 'https://picsum.photos/1200/600' 
-        }}
-        style={styles.image}
-      />  
-        {testData.map((item, idx) => (
-          <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
-        ))}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safearea:{
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'stretch',
