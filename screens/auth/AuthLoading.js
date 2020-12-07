@@ -6,6 +6,7 @@ import { useAuth } from "../../provider/Auth";
 
 export default function AuthLoading(props) {
     const { navigate } = props.navigation;
+    const { navigation } = props;
     const { getAuthState } = useAuth();
 
     useEffect(() => {
@@ -18,12 +19,12 @@ export default function AuthLoading(props) {
             const { user } = await getAuthState();
 
             if (user) {
-                navigate('App');
+                navigation.replace('App');
                
-            } else navigate('Auth');
+            } else navigation.replace('Auth');
 
         } catch (e) {
-            navigate('Auth');
+            navigation.replace('Auth');
         }
     }
 

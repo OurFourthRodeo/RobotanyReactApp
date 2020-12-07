@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
       justifyContent: "flex-end",
   },
   header:{
-      //backgroundColor: "white",
       flexDirection: "row",
   },
   image: {
@@ -55,20 +54,3 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-
-
-//componentDidMount() {
-  //   Axios.get('https://robotany.queueunderflow.com/')
-  //     .then(response => {
-  //       this.setState({plantdata: response.data});
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     })
-  // }
-
-  // displayData() {
-  //   return this.state.plantdata.map(function(currentData, i) {
-  //     return <PlantData dat={currentData} key={i} />
-  //   })
-  // }<Text> {  this.displayData() } </Text>

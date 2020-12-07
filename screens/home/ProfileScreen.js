@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     header:{
-        //backgroundColor: "white",
         flexDirection: "row",
     },
     image: {

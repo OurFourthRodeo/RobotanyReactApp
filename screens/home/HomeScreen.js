@@ -40,12 +40,7 @@ const styles = StyleSheet.create({
       color:"#375177",
       margin: 5,
   },
-  logOutButton:{
-      //alignSelf:"flex-end",
-      //justifyContent: "flex-end",
-  },
   header:{
-    //backgroundColor: "white",
     alignContent: "space-between",
     flexDirection: 'row',
     justifyContent: 'space-between',
