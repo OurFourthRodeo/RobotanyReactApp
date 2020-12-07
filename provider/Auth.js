@@ -33,6 +33,7 @@ function AuthProvider(props) {
     };
 
     // Handle Login
+    // data: API response from signup/signin
     const handleLogin = async (data) => {
         try{
             //STORE DATA
@@ -67,7 +68,8 @@ function AuthProvider(props) {
         }
     };
 
-    //UPDATE USER LOCAL STORAGE DATA AND DISPATCH TO REDUCER
+    // UPDATE USER LOCAL STORAGE DATA AND DISPATCH TO REDUCER
+    // user: takes response.user from updateProfile API call
     const updateUser = async (user) => {
         try {
             await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -76,6 +78,23 @@ function AuthProvider(props) {
             throw new Error(error);
         }
     };
+
+    const createUser = async (data) => {
+        try{
+            //STORE DATA
+            let {token, user} = data;
+            let data_ = [[USER_KEY, JSON.stringify(user)], [TOKEN_KEY, token]];
+            await AsyncStorage.multiSet(data_);
+
+            //AXIOS AUTHORIZATION HEADER
+            axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
+            //DISPATCH TO REDUCER
+            dispatch({type: LOGGED_IN, user:data.user});
+        }catch (error) {
+            throw new Error(error);
+        }
+    }
 
     const value = useMemo(() => {
         return {state, getAuthState, handleLogin, handleLogout, updateUser};

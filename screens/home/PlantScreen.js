@@ -1,51 +1,43 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
-import Axios from 'axios';
-import { SafeAreaView } from 'react-native-safe-area-context';
-//import { Card } from '../components/';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import ProgressBar from '../../components/ProgressBar'
 
-// GET: will recieve data from database
-// const PlantData = props => (
-//   <Text> 
-//     <Link to={"/edit/"+props.dat._id}>Edit</Link>
-//   </Text>
-// )
+const testData = [
+  { bgcolor: "#06c258", completed: 60 },
+];
 
 export default function PlantScreen() {
-
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Plant Details</Text>
-        </View>
-        <Image
-          source={{ 
-            width: "80%",
-            height: 200,
-            uri: 'https://picsum.photos/1200/600' 
-          }}
-          style={styles.image}
-        />  
-
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Plant Details</Text>
       </View>
-    </SafeAreaView>
+      <Image
+        source={{ 
+          uri: 'https://picsum.photos/1200/600' 
+        }}
+        style={styles.image}
+      />  
+        {testData.map((item, idx) => (
+          <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
+        ))}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'stretch',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      margin: 15,
-    },
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    margin: 5,
+  },
   title:{
       fontWeight:"bold",
       fontSize:30,
       color:"#375177",
-      margin: 10,
+      margin: 5,
   },
   logOutButton:{
       alignSelf:"flex-end",
@@ -56,6 +48,8 @@ const styles = StyleSheet.create({
       flexDirection: "row",
   },
   image: {
+    height: 150,
+    width: 300,
     borderRadius: 5,
     alignSelf: "center",
     marginTop: 5,

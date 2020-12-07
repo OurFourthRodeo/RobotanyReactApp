@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as c from '../constants'
 
+// should return {token, user}
 export async function signin(data) {
     try {
         let res = await axios.post(c.SIGNIN, data);
@@ -11,19 +12,34 @@ export async function signin(data) {
     }
 }
 
-export async function signup(username, emailAddress, password) {
-    const newUser = {
-        username: username,
-        email: emailAddress,
-        password: password
-      }
-
+// should return {token, user}
+export async function signup(data) {
     try {
         let res = await axios.post(c.SIGNUP, data);
         return res.data;
         
     } catch (e) {
         throw handler(e)
+    }
+}
+
+export async function updateProfile(userId, data) {
+    try {
+        const options = {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "multipart/form-data"
+            }
+        };
+
+        const form_data = new FormData();
+        for (let key in data ) 
+            form_data.append(key, data[key]);
+        
+        let res = await axios.put(`${c.UPDATE_PROFILE}/${userId}`, form_data, options);
+        return res.data;
+    } catch (e) {
+        throw handler(e);
     }
 }
 

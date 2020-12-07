@@ -17,16 +17,12 @@ export default function LoginScreen(props) {
   // sign in and errors
   const [SignUpErrors, setSignUpErrors] = useState({});
   const { handleLogin } = useAuth();
-  const [loading, setLoading] = useState(false);
 
   async function sendToAPI(data) {
-    setLoading(true);
-
+    console.log(data.email);
     try {
       let response = await api.signin(data);
       await handleLogin(reponse);
-
-      setLoading(false);
 
       // check if username is null
       let username = (response.user.username !== null);
@@ -35,7 +31,6 @@ export default function LoginScreen(props) {
 
     } catch (error) {
       console.log(error.message);
-      setLoading(false);
     }
   }
 
@@ -104,7 +99,7 @@ export default function LoginScreen(props) {
 
         <TouchableOpacity 
           style={styles.loginBtn}
-          onPress={() => onSubmit()} >
+          onPress={() => navigate('Home')} >
           <Text style={styles.loginText}>login</Text>
         </TouchableOpacity>
 

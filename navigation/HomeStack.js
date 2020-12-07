@@ -14,46 +14,44 @@ const Tab = createMaterialBottomTabNavigator();
 function createHomeStack() {
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName="Home Screen"
-                barStyle={{ backgroundColor: "white" }}
-            >
-                <Tab.Screen
-                    name="Home Screen"
-                    component={HomeScreen}
-                    options={{
-                        tabBarLabel: 'Details',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={26} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Plant Details"
-                    component={PlantScreen}
-                    options={{
-                        tabBarLabel: 'Details',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="sprout" color={color} size={26} />
-                        ),
-                    }}
-                />
-                <Tab.Screen 
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={{
-                        title: 'Profile',
-                        headerStyle: {backgroundColor: 'black'},
-                        headerTintColor: 'white',
-                        tabBarLabel: 'Profile',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="account" color={color} size={26} />
-                        ),
-                    }}
-                />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <Tab.Navigator
+            initialRouteName="Home Screen"
+            barStyle={{ backgroundColor: "white" }}
+        >
+            <Tab.Screen
+                name="Home Screen"
+                component={HomeScreen}
+                options={{
+                    tabBarLabel: 'Details',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Plant Details"
+                component={PlantScreen}
+                options={{
+                    tabBarLabel: 'Details',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="sprout" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen 
+                name="Profile"
+                component={ProfileScreen}
+                options={{
+                    title: 'Profile',
+                    headerStyle: {backgroundColor: 'black'},
+                    headerTintColor: 'white',
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={26} />
+                    ),
+                }}
+            />
+        </Tab.Navigator>
     );
   };
 

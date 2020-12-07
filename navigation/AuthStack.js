@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useReducer} from 'react';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import CreateAccountScreen from '../screens/auth/CreateAccountScreen';
@@ -14,48 +15,37 @@ function SplashScreen() {
     );
 }
 
-const createAuthStack = createStackNavigator(
-    {
-        SignUp: CreateAccountScreen,
-        SignIn: LoginScreen,
-        SetupPlant: PlantSetup,
-        SetupBot: BotSetup
-    },
-    {
-        initialRouteName: 'SignIn'
-    }
-);
+const Stack = createStackNavigator();
+
+function createAuthStack() {
+    return (
+        <Stack.Navigator
+            initialRouteName="SignIn">
+            <Stack.Screen 
+                name="SignIn" 
+                component={LoginScreen} 
+            />
+            <Stack.Screen 
+                name="SignUp"
+                component={CreateAccountScreen}
+                options={{
+                    title: 'Sign Up',
+                }}
+            />
+            <Stack.Screen 
+                name="SetupPlant"
+                component={PlantSetup}
+            />
+            <Stack.Screen
+                name="SetupBot"
+                component={BotSetup}
+            />
+            <Stack.Screen 
+                name="Splash"
+                component={SplashScreen}
+            />
+        </Stack.Navigator>
+    );
+};
 
 export default createAuthStack;
-// const createAuthStack = () => {
-
-//     return (
-//         <Stack.Navigator>
-//             <Stack.Screen 
-//                 name="SignIn" 
-//                 component={LoginScreen} 
-//             />
-//             <Stack.Screen 
-//                 name="SignUp"
-//                 component={CreateAccountScreen}
-//                 options={{
-//                     title: 'Sign Up',
-//                 }}
-//             />
-//             <Stack.Screen 
-//                 name="PlantSetup"
-//                 component={PlantSetup}
-//             />
-//             <Stack.Screen
-//                 name="BotSetup"
-//                 component={BotSetup}
-//             />
-//             <Stack.Screen 
-//                 name="Splash"
-//                 component={SplashScreen}
-//             />
-//         </Stack.Navigator>
-//     );
-// }
-
-// export default createAuthStack;

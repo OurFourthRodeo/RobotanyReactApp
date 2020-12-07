@@ -12,18 +12,14 @@ export default function AuthLoading(props) {
         initialize()
     }, []);
 
+    // if user is logged in, navigate to home stack
     async function initialize() {
         try {
             const { user } = await getAuthState();
 
             if (user) {
-                // check if username exists 
-                let username = !!(user.username);
-
-                if (username) navigate('App');
-                else navigate('Auth', {}, StackActions.replace({ routeName: "LogIn" }))
-                // TODO: fix
-
+                navigate('App');
+               
             } else navigate('Auth');
 
         } catch (e) {

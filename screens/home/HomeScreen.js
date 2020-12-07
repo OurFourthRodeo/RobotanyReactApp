@@ -15,12 +15,12 @@ export default function Home(props) {
     <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.title}>Welcome ${user.</Text>
+            <Text style={styles.title}>Welcome</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate("Plant Details")}>
+          <TouchableOpacity onPress={() => navigate("Plant Details")}>
             <Card title="Plant Health" name="Charles" />
           </TouchableOpacity>
-          <ImageCard title="Live Video" />
+          <ImageCard title="Recent Image" />
         </View>
     </SafeAreaView>
   );
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
       fontWeight:"bold",
       fontSize:30,
       color:"#375177",
-      //alignSelf:"flex-start",
       margin: 5,
   },
   logOutButton:{

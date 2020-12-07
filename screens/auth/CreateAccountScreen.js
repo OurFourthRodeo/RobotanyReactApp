@@ -7,6 +7,7 @@ import * as api from "../../services/Auth";
 
 export default function CreateAccountScreen(props) {
   const { navigation } = props;
+  const { state, updateUser } = useAuth();
 
   // user credentials 
   const [emailAddress, setEmail] = useState('');
@@ -16,22 +17,20 @@ export default function CreateAccountScreen(props) {
 
   // errors and loading
   const [SignUpErrors, setSignUpErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   
   async function sendToAPI(data) {
-    setLoading(true);
 
     try {
-      let response = await api.signup(username, emailAddress, password);
-      setLoading(false);
-
+      // if signup is successful, login and add to local storage
+      let response = await api.signup(data);
+      handleLogin(response);
+      
       // send to plant setup
       console.log("sent to API")
       navigation.replace("SetupPlant");
 
     } catch (error) {
       console.log(error.message);
-      setLoading(false);
     }
   }
 
