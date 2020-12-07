@@ -4,20 +4,17 @@ import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
 
 import * as api from "../../services/Auth";
-import { useAuth } from "../../provider/Auth";
 
 export default function LoginScreen(props) {
   const { navigation } = props;
   const { navigate } = navigation;
 
   // variables
-  const [email, setEmail] = React.useState('');
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('');
 
   // sign in and errors
   const [SignUpErrors, setSignUpErrors] = useState({});
-  const { handleLogin } = useAuth();
 
   async function sendToAPI(data) {
     console.log(data.username);
@@ -25,7 +22,6 @@ export default function LoginScreen(props) {
 
     try {
       let response = await api.signin(data);
-      //await handleLogin(reponse);
       if (response.error) {
         // failed, return an error
      } else {

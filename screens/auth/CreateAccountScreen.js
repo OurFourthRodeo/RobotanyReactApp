@@ -4,11 +4,9 @@ import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
 
 import * as api from "../../services/Auth"; 
-import { useAuth } from "../../provider/Auth";
 
 export default function CreateAccountScreen(props) {
   const { navigation } = props;
-  const { handleLogin } = useAuth();
 
   // user credentials 
   const [emailAddress, setEmail] = useState('');
@@ -25,10 +23,9 @@ export default function CreateAccountScreen(props) {
       // if signup is successful, login and add to local storage
       let response = await api.signup(data);
       if (response.error) {
-         // failed, return an error
+         // TODO: failed, return an error
       } else {
         let response = await api.signin(data);
-        //await handleLogin(response);
         // send to plant setup
         navigation.replace("SetupPlant");
       }

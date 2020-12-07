@@ -2,12 +2,10 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAuth } from '../../provider/Auth';
 import * as api from '../../services/Auth';
 
 export default function ProfileScreen(props) {
     const { navigate } = props.navigation;
-    const { state, handleLogout } = useAuth();
     const user = state.user;
 
     return (
@@ -18,7 +16,6 @@ export default function ProfileScreen(props) {
             <TouchableOpacity
                 onPress={() => {
                     api.logout("nothing");
-                    handleLogout();
                     navigate('Auth', { screen: "SignIn" }); }}>
                 <Text style={styles.logOutButton}>log out</Text>
             </TouchableOpacity>            
