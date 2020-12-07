@@ -4,13 +4,8 @@ import Card from '../../components/Card'
 import ImageCard from '../../components/ImageCard'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAuth } from "../../provider/Auth"
-
 export default function Home(props) {
   const { navigate } = props.navigation;
-
-  const { state, handleLogout } = useAuth();
-  const user = state.user;
 
   return (
     <SafeAreaView style={styles.safearea}>
