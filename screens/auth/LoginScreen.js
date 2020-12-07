@@ -12,6 +12,7 @@ export default function LoginScreen(props) {
 
   // variables
   const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('');
 
   // sign in and errors
@@ -19,15 +20,22 @@ export default function LoginScreen(props) {
   const { handleLogin } = useAuth();
 
   async function sendToAPI(data) {
-    console.log(data.email);
+    console.log(data.username);
+    console.log(data.password);
+
     try {
       let response = await api.signin(data);
-      await handleLogin(reponse);
+      //await handleLogin(reponse);
+      if (response.error) {
+        // failed, return an error
+     } else {
+        navigate('Home');
+     }
 
-      // check if username is null
-      let username = (response.user.username !== null);
-      if (username) navigate('Home');
-      else navigation.replace('SignIn');
+      // // check if username is null
+      // let username = (response.user.username !== null);
+      // if (username) navigate('Home');
+      // else navigation.replace('SignIn');
 
     } catch (error) {
       console.log(error.message);
@@ -36,14 +44,15 @@ export default function LoginScreen(props) {
 
   const onSubmit = () => {
     const rules = {
-        email: 'required|email',
+        username: 'required|alpha',
         password: 'required|string|min:6|max:40' 
     };
 
     const data = {
-        email: email,
+        username: username,
         password: password
     };
+    sendToAPI(data);
 
     const messages = {
         required: field => `${field} is required`,
@@ -72,9 +81,9 @@ export default function LoginScreen(props) {
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
-            placeholder="email..." 
+            placeholder="username..." 
             placeholderTextColor="#003f5c"
-            onChangeText={setEmail}/>
+            onChangeText={setUsername}/>
         </View>
         <View style={styles.inputView} >
           <TextInput  
@@ -99,7 +108,7 @@ export default function LoginScreen(props) {
 
         <TouchableOpacity 
           style={styles.loginBtn}
-          onPress={() => navigate('Home')} >
+          onPress={() => onSubmit()} >
           <Text style={styles.loginText}>login</Text>
         </TouchableOpacity>
 

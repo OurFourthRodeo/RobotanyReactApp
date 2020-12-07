@@ -11,6 +11,7 @@ export default function PlantSetup(props) {
   // state variables
   const [plantName, setName] = useState('');
   const [plantType, setType] = useState('');
+  const [mac, setMac] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function onSubmit() {
@@ -18,7 +19,7 @@ export default function PlantSetup(props) {
     setLoading(true);
 
     try {
-      let response = await api.addPlant(plantName, plantType);
+      let response = await api.addPlant(plantName, mac);
       setLoading(false);
 
       navigate('Home');
@@ -44,16 +45,15 @@ export default function PlantSetup(props) {
         <View style={styles.inputView} >
           <TextInput  
             style={styles.inputText}
-            placeholder="type..." 
+            placeholder="mac address..." 
             placeholderTextColor="#003f5c"
-            onChangeText={setType} />
+            onChangeText={setMac} />
         </View>
 
         <TouchableOpacity 
           type="submit"
           style={styles.loginBtn} 
-          onPress={() => navigate('Home')} >
-          {/*  onPress={() => onSubmit()} */}
+          onPress={() => onSubmit()}>
           
           <Text style={styles.loginText}>connect your plant</Text>
         </TouchableOpacity> 

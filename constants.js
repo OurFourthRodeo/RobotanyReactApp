@@ -4,7 +4,11 @@ import React from 'react';
 export const API_URL = 'https://robotany.queueunderflow.com';
 
 // API endpoints
-export const SIGNIN = `${API_URL}/auth/signin`;
-export const SIGNUP = `${API_URL}/auth/signup`;
-export const ADDPLANT = `${API_URL}/addplant`;
+export const SIGNIN = `${API_URL}/api/user/v1/login`;
+export const SIGNUP = `${API_URL}/api/user/v1/create`;
+export const ADDPLANT = `${API_URL}/api/user/v1/addPlant`;
+export const SIGNOUT = `${API_URL}/api/user/v1/logout`;
 export const UPDATE_PROFILE = `${API_URL}/user`;
+export const CHECK_LOGGEDIN = `${API_URL}/api/user/v1/username`;
+
+// GET THINGS

@@ -3,11 +3,12 @@ import { Alert, StyleSheet, Text, View, TextInput, TouchableOpacity, Button } fr
 import 'react-native-gesture-handler';
 import { validateAll } from 'indicative/validator';
 
-import * as api from "../../services/Auth";
+import * as api from "../../services/Auth"; 
+import { useAuth } from "../../provider/Auth";
 
 export default function CreateAccountScreen(props) {
   const { navigation } = props;
-  const { state, updateUser } = useAuth();
+  const { handleLogin } = useAuth();
 
   // user credentials 
   const [emailAddress, setEmail] = useState('');
@@ -23,11 +24,14 @@ export default function CreateAccountScreen(props) {
     try {
       // if signup is successful, login and add to local storage
       let response = await api.signup(data);
-      handleLogin(response);
-      
-      // send to plant setup
-      console.log("sent to API")
-      navigation.replace("SetupPlant");
+      if (response.error) {
+         // failed, return an error
+      } else {
+        let response = await api.signin(data);
+        //await handleLogin(response);
+        // send to plant setup
+        navigation.replace("SetupPlant");
+      }
 
     } catch (error) {
       console.log(error.message);
@@ -58,7 +62,7 @@ export default function CreateAccountScreen(props) {
 
     validateAll(data, rules, messages)
         .then(() => {
-            sendToAPI({ username, emailAddress, password });
+            sendToAPI({ username, email:emailAddress , password });
         })
         .catch(err => {
             const formatError = {};
@@ -67,69 +71,68 @@ export default function CreateAccountScreen(props) {
             });
             setSignUpErrors(formatError);
         });
-    };
+  };
 
-    return (
-      <View style={styles.container}>
-        <Text style={styles.logo}>sign up</Text>
-        <View style={styles.inputView} >
-          <TextInput  
-            style={styles.inputText}
-            placeholder="username..." 
-            placeholderTextColor="#003f5c"
-            onChangeText={setUsername} />
-        </View>
-        
-        <View style={styles.inputView} >
-          <TextInput  
-            style={styles.inputText}
-            placeholder="email..." 
-            placeholderTextColor="#003f5c"
-            onChangeText={setEmail}/>
-        </View>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.logo}>sign up</Text>
+      <View style={styles.inputView} >
+        <TextInput  
+          style={styles.inputText}
+          placeholder="username..." 
+          placeholderTextColor="#003f5c"
+          onChangeText={setUsername} />
+      </View>
+      
+      <View style={styles.inputView} >
+        <TextInput  
+          style={styles.inputText}
+          placeholder="email..." 
+          placeholderTextColor="#003f5c"
+          onChangeText={setEmail}/>
+      </View>
 
-        <View style={styles.inputView} >
-          <TextInput  
-            secureTextEntry
-            style={styles.inputText}
-            placeholder="password..." 
-            placeholderTextColor="#003f5c"
-            onChangeText={setPassword}
-            secureTextEntry />
-        </View>
-
-        <View style={styles.inputView} >
-          <TextInput  
+      <View style={styles.inputView} >
+        <TextInput  
           secureTextEntry
           style={styles.inputText}
-          placeholder="confirm password..." 
+          placeholder="password..." 
           placeholderTextColor="#003f5c"
-          onChangeText={setPasswordConfirm}
+          onChangeText={setPassword}
           secureTextEntry />
-        </View> 
-
-        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
-                    {SignUpErrors ? SignUpErrors.password : null}
-        </Text>
-        <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
-                    {SignUpErrors ? SignUpErrors.email : null}
-        </Text>
-        
-        <TouchableOpacity 
-          style={styles.loginBtn} 
-          onPress={() => navigation.replace("SetupPlant")} >
-          {/* onSubmit({ username, emailAddress, password })} > */}
-          <Text style={styles.loginText}>connect your plant</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.replace("SignIn")} >
-          <Text style={styles.forgot}>already have an account? sign-in</Text>
-        </TouchableOpacity>
-
       </View>
-    );
+
+      <View style={styles.inputView} >
+        <TextInput  
+        secureTextEntry
+        style={styles.inputText}
+        placeholder="confirm password..." 
+        placeholderTextColor="#003f5c"
+        onChangeText={setPasswordConfirm}
+        secureTextEntry />
+      </View> 
+
+      <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                  {SignUpErrors ? SignUpErrors.password : null}
+      </Text>
+      <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                  {SignUpErrors ? SignUpErrors.email : null}
+      </Text>
+      
+      <TouchableOpacity 
+        style={styles.loginBtn} 
+        onPress={() => onSubmit()} >
+        <Text style={styles.loginText}>connect your plant</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.replace("SignIn")} >
+        <Text style={styles.forgot}>already have an account? sign-in</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {

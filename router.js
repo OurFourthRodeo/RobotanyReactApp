@@ -16,7 +16,10 @@ export default function Router(props) {
     return (
         <AuthProvider>
             <NavigationContainer>
-                <AppStack.Navigator initialRouteName="Loading">
+                <AppStack.Navigator 
+                    initialRouteName="Loading"
+                    screenOptions={{
+                        headerShown: false}}>
                     <AppStack.Screen name="Auth" component={createAuthStack}/>
                     <AppStack.Screen name="Home" component={createHomeStack}/>
                     <AppStack.Screen name="Loading" component={AuthLoading}/>
