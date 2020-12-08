@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, Alert, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Alert, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
 const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
@@ -10,7 +10,9 @@ export default class ProfileScreen extends React.Component {
     constructor(){
         super();
         this.onValueChange = this.onValueChange.bind(this);
-        this.state = {switchValue: false};
+        this.state = {
+            switchValue: false,
+        }
     }
 
     render () {
@@ -35,15 +37,17 @@ export default class ProfileScreen extends React.Component {
                                 title="Log Out"
                                 onPress={() => {
                                     api.logout("nothing");
-                                    this.props.navigation.navigate('Auth', { screen: "SignIn" }); }}
+                                    this.props.navigation.navigate('Auth', { screen: "SignIn" }); 
+                                }}
                             />                   
                         </SettingsList>
-                    </View>          
+                    </View>        
                 </View>
             </SafeAreaView>
         );
     }
-    onValueChange(value){
+
+    onValueChange(value) {
         this.setState({switchValue: value});
     }
 }
