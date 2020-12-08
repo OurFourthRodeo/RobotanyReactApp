@@ -1,36 +1,38 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import Constants from 'expo-constants';
 const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
-import ProgressBar from './ProgressBar'
+import { ProgressBar, Colors } from 'react-native-paper';
 
-const testData = [
-  { bgcolor: "#06c258", completed: 90 },
-  //{ bgcolor: "#00695c", completed: 30 },
-  //{ bgcolor: "#ef6c00", completed: 53 },
-];
+import { getMoisture } from '../services/Auth';
 
 const Card = (props) => {
-    return (
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.header}>
-            <Image style={styles.profileImg} source={{uri: profileImg}} />
-            <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> {props.title} </Text>
-          </View>
-          <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.name} is thriving! </Text>
-          {testData.map((item, idx) => (
-            <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
-          ))}
+  const [moisture, setMoisture] = useState(0.5);
+
+  useEffect(() => {
+    getMoisture(props.plant_mac).then((data) => {
+      setMoisture(data.moisture);
+    })
+  })
+
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Image style={styles.profileImg} source={{uri: profileImg}} />
+          <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> {props.title} </Text>
         </View>
+        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.name} is thriving! </Text>
+        <ProgressBar progress={moisture} color={Colors.red800} />
       </View>
-    );
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
     container: {
       justifyContent: 'center',
-      paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
     },
     card:{
