@@ -20,9 +20,9 @@ export default function PlantScreen() {
           }}
           style={styles.image}
         />  
-          {testData.map((item, idx) => (
+          {/* {testData.map((item, idx) => (
             <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
-          ))}
+          ))} */}
       </View>
     </SafeAreaView>
   );

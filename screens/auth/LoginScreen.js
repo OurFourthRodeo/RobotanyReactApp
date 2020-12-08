@@ -25,7 +25,7 @@ export default function LoginScreen(props) {
       if (response.error) {
         // failed, return an error
      } else {
-        navigate('Home');
+        navigate('Home', {screen: 'Home Screen'});
      }
 
       // // check if username is null

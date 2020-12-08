@@ -156,9 +156,12 @@ export async function getMoisture(id) {
 export async function getImage(id) {
     try {
         console.log("API: grabbing latest image");
-        let res = await axios.get(c.GET_IMAGE, id);
+        let res = await axios.get(c.GET_IMAGE, {params: {id}, withCredentials: true});
+        console.log("Image response.")
+        console.log(res.data);
         return res.data;
     } catch (e) {
+        console.log("API: image error");
         throw handler(e);
     }
 }
@@ -166,10 +169,10 @@ export async function getImage(id) {
 /*  Paramters: {params: {all: true}}
     Returns:
         list of user's plants (MAC included) */
-export async function getPlants(mac) {
+export async function getPlants() {
     try {
         console.log("API: grabbing list of plants");
-        let res = await axios.get(c.GET_PLANTS, mac, {all: true});
+        let res = await axios.get(c.GET_PLANTS, {params: {all: 1}, withCredentials: true});
         return res.data;
     } catch (e) {
         throw handler(e);

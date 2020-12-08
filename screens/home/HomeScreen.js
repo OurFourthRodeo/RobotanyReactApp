@@ -3,23 +3,47 @@ import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 import Card from '../../components/Card'
 import ImageCard from '../../components/ImageCard'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { render } from 'react-dom';
+import * as api from "../../services/Auth"
+import { AppLoading } from 'expo';
 
-export default function Home(props) {
-  const { navigate } = props.navigation;
+export default class Home extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
 
-  return (
-    <SafeAreaView style={styles.safearea}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Welcome</Text>
+    }
+  }
+
+  componentDidMount(){
+    api.getPlants().then((plants) => {
+      this.setState({
+        plants
+      })
+    })
+  }
+
+  // add new device
+  // get all plants
+
+  render() {
+    return (
+      <SafeAreaView style={styles.safearea}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.title}>Welcome</Text>
+            </View>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("Plant Details")}>
+              <Card title="Plant Health" 
+                name={this.state.plants ? this.state.plants[0].name : "No plant"}
+                plant_mac={0} 
+                />
+            </TouchableOpacity>
+            <ImageCard title="Recent Image" plant={this.state.plants ? this.state.plants[0].mac : null} />
           </View>
-          <TouchableOpacity onPress={() => navigate("Plant Details")}>
-            <Card title="Plant Health" name="Charles" />
-          </TouchableOpacity>
-          <ImageCard title="Recent Image" />
-        </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
