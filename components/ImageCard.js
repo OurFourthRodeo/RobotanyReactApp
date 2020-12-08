@@ -1,25 +1,33 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Video } from 'expo-av';
-const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
+const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png";
+
+import { getImage } from '../services/Auth';
 
 const ImageCard = (props) => {
-    return (
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <View style={styles.header}>
-              <Image style={styles.profileImg} source={{uri: profileImg}} />
-              <Text style={{fontWeight:"bold",fontSize:24}}> {props.title} </Text>          
-            </View>
-            <Image
-              style={styles.image}
-              source={{
-                uri: 'https://picsum.photos/1200/600',
-              }}
-            />
+  const [url, setURL] = useState("");
+
+  console.log(props);
+  
+  useEffect(() => {
+    getImage(props.plant).then((image) => {
+      setURL(image.url);
+    })
+  })
+  
+  return (
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.header}>
+            <Image style={styles.profileImg} source={{uri: profileImg}} />
+            <Text style={{fontWeight:"bold",fontSize:24}}> {props.title} </Text>          
           </View>
+          {url ? <Image style={styles.image} 
+            source={{ uri: url }}/> : <Text>No Image</Text> }
         </View>
+      </View>
     );
 }
 
@@ -30,7 +38,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ecf0f1',
     },
     image: {
-      height: 150,
+      height: 250,
       width: "95%",
       borderRadius: 5,
       alignSelf: "center",
