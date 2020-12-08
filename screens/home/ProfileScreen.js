@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Alert, Image, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 
 import * as api from '../../services/Auth';
@@ -26,13 +25,13 @@ export default class ProfileScreen extends React.Component {
                         <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
                             <SettingsList.Header headerStyle={{marginTop:0}}/>
                             <SettingsList.Item 
-                                //icon={<Image style={styles.iconImg} source={{uri: profileImg}}/>}
                                 title="Add Plant"
-                                titleInfoStyle={styles.titleInfoStyle}
                                 onPress={() => Alert.alert('Just checking')}
-                            />        
+                            />    
                             <SettingsList.Item 
-                                //icon={<MaterialCommunityIcons name="home" color={color} size={26} />}
+                                title="Remove Plant"
+                            />
+                            <SettingsList.Item 
                                 title="Log Out"
                                 onPress={() => {
                                     api.logout("nothing");
