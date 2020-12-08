@@ -24,7 +24,7 @@ const Card = (props) => {
           <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> {props.title} </Text>
         </View>
         <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.name} is thriving! </Text>
-        <ProgressBar progress={moisture} color={Colors.red800} />
+        <ProgressBar progress={moisture} color="green" />
       </View>
     </View>
   );

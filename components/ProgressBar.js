@@ -14,16 +14,6 @@ export default class ProgressBar extends React.Component {
     return this.state.moisture_level;
   }
 
-  componentDidMount() {
-    Axios.get('http://queueunderflow.com/api/data/moisture/latest')
-        .then(response => {
-          this.setState({moisture_level: response.data});
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-  }
-
   render() {
     const containerStyles = {
       height: 20,

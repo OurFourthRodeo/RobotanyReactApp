@@ -82,7 +82,7 @@ export async function addPlant(name, mac) {
 export async function registerDevice(device) {
     try {
         console.log("API: registering device " + device)
-        let res = await axios.post(c.REGISTER_DEVICE, device);
+        let res = await axios.post(c.REGISTER_DEVICE, device, {withCredentials: true});
         return res.data;
     } catch (e) {
         throw handler(e);
