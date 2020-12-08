@@ -49,6 +49,8 @@ export const UNREGISTER_DEVICE = `${API_URL}/api/user/v1/unregisterDevice`;
         error - malformed request */
 export const DELETE_PLANT = `${API_URL}/api/user/v1/deltePlant`; 
 
+/* UNSUPPORTED */
+export const UPDATE_PROFILE = "undecided";
 
 /*************** < GET REQUESTS > *****************/
 
