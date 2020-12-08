@@ -12,14 +12,25 @@ export default class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-        country: 'uk'
+        labels: [{label: "None", value: "0"}],
+        defaultPlant: "0",
+        selectedPlant: null
     }
   }
 
   componentDidMount(){
     api.getPlants().then((plants) => {
+      let labels = []
+      plants.forEach(element => {
+        labels.push({label: element.name, value: element.mac});
+      });
+      let defaultPlant = labels[0].value
+      let selectedPlant = plants[0];
       this.setState({
-        plants
+        plants,
+        labels,
+        defaultPlant,
+        selectedPlant
       })
     })
   }
@@ -35,23 +46,25 @@ export default class Home extends React.Component {
               <Text style={styles.title}>Welcome</Text>
             </View>
             <DropDownPicker
-              items={[
-                  {label: 'Item 1', value: 'item1'},
-                  {label: 'Item 2', value: 'item2'},
-              ]}
-              defaultValue="item1"
+              items={this.state.labels}
+              defaultValue={this.state.defaultPlant}
               containerStyle={{height: 40}}
               style={{backgroundColor: '#fafafa'}}
               dropDownStyle={{backgroundColor: '#fafafa'}}
-              onChangeItem={item => console.log(item.label, item.value)}
+              onChangeItem={item => {
+                let plant = {name: item.label, mac: item.value}
+                this.setState({
+                  selectedPlant: plant
+                })
+              }}
             />
             <TouchableOpacity onPress={() => this.props.navigation.navigate("Plant Details")}>
               <Card title="Plant Health" 
-                name={this.state.plants ? this.state.plants[1].name : "No plant"}
-                plant_mac={this.state.plants ? this.state.plants[1].mac : 0} 
+                name={this.state.selectedPlant ? this.state.selectedPlant.name : "No plant"}
+                plant_mac={this.state.selectedPlant ? this.state.selectedPlant.mac : 0} 
                 />
             </TouchableOpacity>
-            <ImageCard title="Recent Image" plant={this.state.plants ? this.state.plants[1].mac : null} />
+            <ImageCard title="Recent Image" plant={this.state.selectedPlant ? this.state.selectedPlant.mac : null} />
           </View>
       </SafeAreaView>
     );
