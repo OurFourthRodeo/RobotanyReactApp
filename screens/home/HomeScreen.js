@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 import Card from '../../components/Card'
 import ImageCard from '../../components/ImageCard'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DropDownPicker } from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { render } from 'react-dom';
 import * as api from "../../services/Auth"
 import { AppLoading } from 'expo';
@@ -34,6 +34,17 @@ export default class Home extends React.Component {
             <View style={styles.header}>
               <Text style={styles.title}>Welcome</Text>
             </View>
+            <DropDownPicker
+              items={[
+                  {label: 'Item 1', value: 'item1'},
+                  {label: 'Item 2', value: 'item2'},
+              ]}
+              defaultValue="item1"
+              containerStyle={{height: 40}}
+              style={{backgroundColor: '#fafafa'}}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={item => console.log(item.label, item.value)}
+            />
             <TouchableOpacity onPress={() => this.props.navigation.navigate("Plant Details")}>
               <Card title="Plant Health" 
                 name={this.state.plants ? this.state.plants[1].name : "No plant"}
