@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   },
   header:{
       flexDirection: "row",
+      marginLeft: 10,
   },
   image: {
     height: 150,

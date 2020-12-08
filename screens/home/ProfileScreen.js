@@ -1,27 +1,52 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SettingsList from 'react-native-settings-list';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 
 import * as api from '../../services/Auth';
 
-export default function ProfileScreen(props) {
-    const { navigate } = props.navigation;
+export default class ProfileScreen extends React.Component {
+    constructor(){
+        super();
+        this.onValueChange = this.onValueChange.bind(this);
+        this.state = {switchValue: false};
+    }
 
-    return (
-        <SafeAreaView style={styles.safearea}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Profile</Text>
+    render () {
+        var bgColor = '#DCE3F5';
+        return (
+            <SafeAreaView style={styles.safearea}>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Profile</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                            <SettingsList.Header headerStyle={{marginTop:0}}/>
+                            <SettingsList.Item 
+                                //icon={<Image style={styles.iconImg} source={{uri: profileImg}}/>}
+                                title="Add Plant"
+                                titleInfoStyle={styles.titleInfoStyle}
+                                onPress={() => Alert.alert('Just checking')}
+                            />        
+                            <SettingsList.Item 
+                                //icon={<MaterialCommunityIcons name="home" color={color} size={26} />}
+                                title="Log Out"
+                                onPress={() => {
+                                    api.logout("nothing");
+                                    this.props.navigation.navigate('Auth', { screen: "SignIn" }); }}
+                            />                   
+                        </SettingsList>
+                    </View>          
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        api.logout("nothing");
-                        navigate('Auth', { screen: "SignIn" }); }}>
-                    <Text style={styles.logOutButton}>log out</Text>
-                </TouchableOpacity>            
-            </View>
-        </SafeAreaView>
-    );
+            </SafeAreaView>
+        );
+    }
+    onValueChange(value){
+        this.setState({switchValue: value});
+    }
 }
 
 const styles = StyleSheet.create({
@@ -48,11 +73,15 @@ const styles = StyleSheet.create({
     },
     header:{
         flexDirection: "row",
+        marginLeft: 10,
     },
-    image: {
-      borderRadius: 5,
-      alignSelf: "center",
-      marginTop: 5,
-    },
+    iconImg:{
+        width:35,
+        height:35,
+        borderRadius:50,
+        marginLeft: 10,
+        marginTop: 5,
+        marginBottom: 5,
+      },
   });
   
