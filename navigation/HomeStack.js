@@ -12,6 +12,8 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
+import * as api from '../services/Auth';
+
 const Tab = createMaterialBottomTabNavigator();
 
 Notifications.setNotificationHandler({
@@ -34,6 +36,7 @@ function createHomeStack() {
         // notifications
         registerForPushNotificationsAsync().then(token => {
           setExpoPushToken(token);
+          api.registerDevice(token);
         });
     
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -77,7 +80,7 @@ function createHomeStack() {
             />
             <Tab.Screen 
                 name="Profile"
-                component={ProfileScreen}
+                children={expoPushToken => <ProfileScreen token={expoPushToken}/>}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (
@@ -103,7 +106,7 @@ function createHomeStack() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+
     } else {
       alert('Must use physical device for Push Notifications');
     }

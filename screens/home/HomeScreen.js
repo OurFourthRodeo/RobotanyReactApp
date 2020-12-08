@@ -10,7 +10,6 @@ import { AppLoading } from 'expo';
 
 export default function Home(props) {
   const { navigation } = props;
-  const { expoPushToken } = props;
 
   const [labels, setLabels] = useState([{label: "None", value: "0"}]);
   const [plants, setPlants] = useState([{name: "None", mac: "0"}]);
@@ -18,8 +17,6 @@ export default function Home(props) {
   const [selectedPlant, setSelectedPlant] = useState(null);
 
   useEffect(() => {
-    api.registerDevice(expoPushToken);
-
     api.getPlants().then((plants) => {
       if (plants) {
         setPlants(plants);
