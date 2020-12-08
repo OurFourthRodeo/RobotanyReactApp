@@ -26,6 +26,7 @@ Notifications.setNotificationHandler({
 // logged in our created an account. 
 function createHomeStack() {
     const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
 
@@ -78,9 +79,6 @@ function createHomeStack() {
                 name="Profile"
                 component={ProfileScreen}
                 options={{
-                    title: 'Profile',
-                    headerStyle: {backgroundColor: 'black'},
-                    headerTintColor: 'white',
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account" color={color} size={26} />

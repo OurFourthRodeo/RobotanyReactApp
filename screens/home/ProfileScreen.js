@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, Alert, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
@@ -6,50 +6,38 @@ const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 
 import * as api from '../../services/Auth';
 
-export default class ProfileScreen extends React.Component {
-    constructor(){
-        super();
-        this.onValueChange = this.onValueChange.bind(this);
-        this.state = {
-            switchValue: false,
-        }
-    }
+export default function ProfileScreen(props) {
+    const { navigation } = props;
+    const { expoPushToken } = props;
 
-    render () {
-        var bgColor = '#DCE3F5';
-        return (
-            <SafeAreaView style={styles.safearea}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Profile</Text>
-                    </View>
-                    <View style={styles.container}>
-                        <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
-                            <SettingsList.Header headerStyle={{marginTop:0}}/>
-                            <SettingsList.Item 
-                                title="Add Plant"
-                                onPress={() => Alert.alert('Just checking')}
-                            />    
-                            <SettingsList.Item 
-                                title="Remove Plant"
-                            />
-                            <SettingsList.Item 
-                                title="Log Out"
-                                onPress={() => {
-                                    api.logout("nothing");
-                                    this.props.navigation.navigate('Auth', { screen: "SignIn" }); 
-                                }}
-                            />                   
-                        </SettingsList>
-                    </View>        
+    return (
+        <SafeAreaView style={styles.safearea}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Profile</Text>
                 </View>
-            </SafeAreaView>
-        );
-    }
-
-    onValueChange(value) {
-        this.setState({switchValue: value});
-    }
+                <View style={styles.container}>
+                    <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                        <SettingsList.Header headerStyle={{marginTop:0}}/>
+                        <SettingsList.Item 
+                            title="Add Plant"
+                            onPress={() => Alert.alert(expoPushToken)}
+                        />    
+                        <SettingsList.Item 
+                            title="Remove Plant"
+                        />
+                        <SettingsList.Item 
+                            title="Log Out"
+                            onPress={() => { 
+                                api.unregisterDevice(expoPushToken).then(() => api.logout())
+                                    .then(() => navigation.navigate('Auth', { screen: "SignIn" })); 
+                            }}
+                        />                   
+                    </SettingsList>
+                </View>        
+            </View>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

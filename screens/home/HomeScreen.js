@@ -8,7 +8,6 @@ import { render } from 'react-dom';
 import * as api from "../../services/Auth"
 import { AppLoading } from 'expo';
 
-
 export default function Home(props) {
   const { navigation } = props;
   const { expoPushToken } = props;
@@ -22,14 +21,22 @@ export default function Home(props) {
     api.registerDevice(expoPushToken);
 
     api.getPlants().then((plants) => {
-      setPlants(plants);
-      let temp_labels = []
-      plants.forEach(element => {
-        temp_labels.push({label: element.name, value: element.mac});
-      });
-      setLabels(temp_labels);
-      setDefaultPlant(temp_labels[0].value);
-      setSelectedPlant(plants[0]);
+      if (plants) {
+        setPlants(plants);
+        let temp_labels = []
+        plants.forEach(element => {
+          temp_labels.push({label: element.name, value: element.mac});
+        });
+        if (plants.length > 0) {
+          setLabels(temp_labels);
+          setDefaultPlant(temp_labels[0].value);
+          setSelectedPlant(plants[0]);
+        } else {
+          setLabels([{label: "None", value: "0"}]);
+          setDefaultPlant("0");
+          setSelectedPlant(null);
+        }
+      }
     })}, []);
 
   return (

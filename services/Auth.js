@@ -18,8 +18,8 @@ export function handler(err) {
         error - malformed request */
 export async function signin(data) {
     try {
+        console.log("API: logging in: " + data);
         let res = await axios.post(c.SIGNIN, data, {withCredentials: true});
-        console.log("Signin API response: " + JSON.stringify(res));
         return res.data;
 
     } catch (e) {
@@ -33,8 +33,8 @@ export async function signin(data) {
         error - malformed request */
 export async function signup(data) {
     try {
+        console.log("API: Logging in " + data);
         let res = await axios.post(c.SIGNUP, data);
-        console.log("Signup API response: " + JSON.stringify(res));
         return res.data;
         
     } catch (e) {
@@ -46,10 +46,10 @@ export async function signup(data) {
     Returns:
         success - successful login
         error - malformed request */
-export async function logout(data) {
+export async function logout() {
     try {
-        let res = await axios.post(c.SIGNOUT, data, {withCredentials: true});
-        console.log("Logout API response: " + JSON.stringify(res));
+        console.log("API: Logging out.");
+        let res = await axios.post(c.SIGNOUT, {withCredentials: true});
         return res.data;
         
     } catch (e) {
@@ -94,10 +94,10 @@ export async function registerDevice(device_) {
         entry - device successfully removed
         empty - no change
         error - malformed request */
-export async function unregisterDevice(device) {
+export async function unregisterDevice(device_) {
     try {
-        console.log("API: unregistering device " + device);
-        let res = await axios.post(c.UNREGISTER_DEVICE, device);
+        console.log("API: unregistering device " + device_);
+        let res = await axios.post(c.UNREGISTER_DEVICE, {device: device_}, {withCredentials: true});
         return res.data;
     } catch(e) {
         throw handler(e);
