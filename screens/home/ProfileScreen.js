@@ -7,7 +7,8 @@ const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 import * as api from '../../services/Auth';
 
 export default function ProfileScreen(props) {
-    const { navigation, token } = props;
+    const { unregister } = props;
+    const navigation = props.props.navigation;
 
     return (
         <SafeAreaView style={styles.safearea}>
@@ -20,7 +21,10 @@ export default function ProfileScreen(props) {
                         <SettingsList.Header headerStyle={{marginTop:0}}/>
                         <SettingsList.Item 
                             title="Add Plant"
-                            onPress={() => Alert.alert('nothing')}
+                            onPress={() => {
+                                Alert.alert('nothing');
+                                console.log(props)
+                            } }
                         />    
                         <SettingsList.Item 
                             title="Remove Plant"
@@ -28,8 +32,7 @@ export default function ProfileScreen(props) {
                         <SettingsList.Item 
                             title="Log Out"
                             onPress={() => { 
-                                console.log(token);
-                                api.unregisterDevice(token).then(() => api.logout())
+                                unregister().then(() => api.logout())
                                     .then(() => navigation.navigate('Auth', { screen: "SignIn" })); 
                             }}
                         />                   

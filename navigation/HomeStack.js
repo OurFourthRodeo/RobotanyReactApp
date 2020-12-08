@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -53,6 +53,10 @@ function createHomeStack() {
         };
     }, []);
 
+    const unregister = useCallback(async () => {
+        await api.unregisterDevice(expoPushToken);
+    })
+
     return (
         <Tab.Navigator
             initialRouteName="Home Screen"
@@ -80,7 +84,7 @@ function createHomeStack() {
             />
             <Tab.Screen 
                 name="Profile"
-                children={expoPushToken => <ProfileScreen token={expoPushToken}/>}
+                children={(props) => <ProfileScreen unregister={unregister} props={props}/>}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (
