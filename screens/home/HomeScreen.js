@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 import Card from '../../components/Card'
 import ImageCard from '../../components/ImageCard'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DropDownPicker } from 'react-native-dropdown-picker';
 import { render } from 'react-dom';
 import * as api from "../../services/Auth"
 import { AppLoading } from 'expo';
@@ -11,7 +12,7 @@ export default class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-
+        country: 'uk'
     }
   }
 
@@ -35,11 +36,11 @@ export default class Home extends React.Component {
             </View>
             <TouchableOpacity onPress={() => this.props.navigation.navigate("Plant Details")}>
               <Card title="Plant Health" 
-                name={this.state.plants ? this.state.plants[0].name : "No plant"}
-                plant_mac={0} 
+                name={this.state.plants ? this.state.plants[1].name : "No plant"}
+                plant_mac={this.state.plants ? this.state.plants[1].mac : 0} 
                 />
             </TouchableOpacity>
-            <ImageCard title="Recent Image" plant={this.state.plants ? this.state.plants[0].mac : null} />
+            <ImageCard title="Recent Image" plant={this.state.plants ? this.state.plants[1].mac : null} />
           </View>
       </SafeAreaView>
     );

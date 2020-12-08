@@ -9,7 +9,7 @@ import { getImage } from '../services/Auth';
 const ImageCard = (props) => {
   const [url, setURL] = useState("");
 
-  console.log(props);
+  //console.log(props);
   
   useEffect(() => {
     getImage(props.plant).then((image) => {
@@ -24,8 +24,10 @@ const ImageCard = (props) => {
             <Image style={styles.profileImg} source={{uri: profileImg}} />
             <Text style={{fontWeight:"bold",fontSize:24}}> {props.title} </Text>          
           </View>
-          {url ? <Image style={styles.image} 
-            source={{ uri: url }}/> : <Text>No Image</Text> }
+          {url ? 
+          <Image style={styles.image} 
+            source={{ uri: url }}/> : 
+            <Text>No Image</Text> }
         </View>
       </View>
     );

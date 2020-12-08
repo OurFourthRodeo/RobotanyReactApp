@@ -10,11 +10,12 @@ const Card = (props) => {
   const [moisture, setMoisture] = useState(0.5);
 
   useEffect(() => {
-    getMoisture(props.plant_mac).then((data) => {
-      setMoisture(data.moisture);
-    })
-  })
-
+    if (props.plant_mac != 0){
+      getMoisture(props.plant_mac).then((data) => {
+        setMoisture(data.moisture);
+      })
+    }
+  }, [props.plant_mac])
 
   return (
     <View style={styles.container}>
@@ -23,8 +24,9 @@ const Card = (props) => {
           <Image style={styles.profileImg} source={{uri: profileImg}} />
           <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> {props.title} </Text>
         </View>
-        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "flex-start"}}> {props.name} is thriving! </Text>
-        <ProgressBar progress={moisture} color="green" />
+        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> {props.name} is thriving! </Text>
+        <ProgressBar style={{marginTop: 10, height: 20, borderRadius: 10}} progress={moisture/4095} color="green" />
+        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}>{(moisture/4095)*100 + "% watered!"}</Text>
       </View>
     </View>
   );
