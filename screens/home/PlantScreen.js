@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import ProgressBar from '../../components/ProgressBar'
+import MoistureChart from '../../components/MoistureChart'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as api from "../../services/Auth"
@@ -57,12 +57,8 @@ export default class PlantScreen extends React.Component {
                 })
               }}
             />
-          <Image
-            source={{ 
-              uri: 'https://picsum.photos/1200/600' 
-            }}
-            style={styles.image}
-          />  
+          <Text style={{fontSize:25, color:"#375177",}}>Moisture Over the Past 24 Hours</Text>
+          <MoistureChart plant={this.state.selectedPlant ? this.state.selectedPlant.mac : null} />
             {/* {testData.map((item, idx) => (
               <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
             ))} */}

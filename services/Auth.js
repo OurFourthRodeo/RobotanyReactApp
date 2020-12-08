@@ -143,8 +143,23 @@ export async function getMoisture(id) {
     try {
         console.log("API: grabbing moisture data for ID", id);
         let res = await axios.get(c.GET_MOISTURE, { params: {id}, withCredentials: true });
-        if(res && res.data && res.data.moisture){
-            return res.data.moisture;
+        if(res && res.data){
+            return res.data;
+        }
+        else{
+            return 0;
+        }
+    } catch (e) {
+        throw handler(e);
+    }
+}
+
+export async function getMultipleMoisture(id, number) {
+    try {
+        console.log("API: grabbing moisture data for ID", id, "with this many values:", number);
+        let res = await axios.get(c.GET_MOISTURE, { params: {id, number}, withCredentials: true });
+        if(res && res.data){
+            return res.data;
         }
         else{
             return 0;
