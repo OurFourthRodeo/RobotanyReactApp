@@ -35,9 +35,6 @@ export default class Home extends React.Component {
     })
   }
 
-  // add new device
-  // get all plants
-
   render() {
     return (
       <SafeAreaView style={styles.safearea}>
@@ -87,11 +84,13 @@ const styles = StyleSheet.create({
       fontSize:30,
       color:"#375177",
       margin: 5,
+      marginLeft: 10,
   },
   header:{
     alignContent: "space-between",
     flexDirection: 'row',
     justifyContent: 'space-between',
+
   },
   image: {
     borderRadius: 5,
