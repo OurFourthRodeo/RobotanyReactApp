@@ -79,10 +79,10 @@ export async function addPlant(name, mac) {
         entry - device successfully added
         empty - no change
         error - malformed request */
-export async function registerDevice(device) {
+export async function registerDevice(device_) {
     try {
-        console.log("API: registering device " + device)
-        let res = await axios.post(c.REGISTER_DEVICE, {device: device}, {withCredentials: true});
+        console.log("API: registering device " + device_)
+        let res = await axios.post(c.REGISTER_DEVICE, {device: device_}, {withCredentials: true});
         return res.data;
     } catch (e) {
         throw handler(e);

@@ -8,30 +8,19 @@ import { render } from 'react-dom';
 import * as api from "../../services/Auth"
 import { AppLoading } from 'expo';
 
-// notifications
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }), 
-});
 
 export default function Home(props) {
   const { navigation } = props;
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  const { expoPushToken } = props;
+
   const [labels, setLabels] = useState([{label: "None", value: "0"}]);
   const [plants, setPlants] = useState([{name: "None", mac: "0"}]);
   const [defaultPlant, setDefaultPlant] = useState("0");
   const [selectedPlant, setSelectedPlant] = useState(null);
 
   useEffect(() => {
+    api.registerDevice(expoPushToken);
+
     api.getPlants().then((plants) => {
       setPlants(plants);
       let temp_labels = []
@@ -41,26 +30,7 @@ export default function Home(props) {
       setLabels(temp_labels);
       setDefaultPlant(temp_labels[0].value);
       setSelectedPlant(plants[0]);
-    })
-    
-    // notifications
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    // send device token to API
-    api.registerDevice(expoPushToken);
-    
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-    }, []);
+    })}, []);
 
   return (
     <SafeAreaView style={styles.safearea}>
@@ -89,37 +59,6 @@ export default function Home(props) {
         </View>
     </SafeAreaView>
   );
-}
-
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Constants.isDevice) {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;
 }
 
 const styles = StyleSheet.create({
