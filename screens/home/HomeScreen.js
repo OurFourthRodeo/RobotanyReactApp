@@ -37,8 +37,8 @@ export default function Home(props) {
     })}, []);
 
   return (
-    <SafeAreaView style={styles.safearea}>
-      <ScrollView>
+    <ScrollView>
+      <SafeAreaView style={styles.safearea}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>Welcome</Text>
@@ -68,8 +68,9 @@ export default function Home(props) {
 
           <ImageCard title="Recent Image" plant={selectedPlant ? selectedPlant.mac : null} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
+
   );
 }
 

@@ -84,7 +84,7 @@ function createHomeStack() {
             />
             <Tab.Screen 
                 name="Profile"
-                children={(props) => <SettingsStack unregister={unregister} props={props}/>}
+                children={(props) => <SettingsStack unreg={unregister} navigation={props.navigation}/>}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (

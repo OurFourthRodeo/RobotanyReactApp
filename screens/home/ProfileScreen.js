@@ -6,9 +6,9 @@ import SettingsList from 'react-native-settings-list';
 import LogoutPopup from '../../components/LogoutPopup';
 import * as api from '../../services/Auth';
 
-export default function ProfileScreen(props) {
-    const { unregister } = props;
-    const navigation = props.props.navigation;
+export default function ProfileScreen(screenProps) {
+    const { unreg } = screenProps;
+    const { navigation } = screenProps;
     const [visible, setVisible] = useState(false);
 
     const toggleVisible = () => { setVisible(!visible) };
@@ -25,21 +25,20 @@ export default function ProfileScreen(props) {
                         <SettingsList.Item 
                             title="Add Plant"
                             onPress={() => {
-                                props.props.navigation.navigate("AddPlant");
+                                console.log(screenProps);
+                                navigation.navigate("AddPlant");
                             }}
                         />    
                         <SettingsList.Item 
                             title="Remove Plant"
-                            onPress={toggleVisible}
+                            //onPress={() => {props.navigation.navigate('Auth', { screen: "SignIn" })}}
                         />
                         <SettingsList.Item 
                             title="Log Out"
-                            onPress={() => { 
-                                unregister().then(() => api.logout())
-                                    .then(() => navigation.navigate('Auth', { screen: "SignIn" })); 
-                        }}/>                   
+                            onPress={toggleVisible}
+                            />                   
                     </SettingsList>
-                    <LogoutPopup visible={visible} toggleVisible={toggleVisible}/>
+                    <LogoutPopup unregister={unreg} navigation={navigation} visible={visible} toggleVisible={toggleVisible}/>
                 </View>        
             </View>
         </SafeAreaView>

@@ -14,7 +14,7 @@ export default function AddPlant(props) {
   async function onSubmit() {
     try {
       let response = await api.addPlant(plantName, mac);
-      navigation.navigate('Profile');
+      navigation.navigate('Profile', {screen: "Profile"});
   
     } catch (error) {
       console.log(error.message);

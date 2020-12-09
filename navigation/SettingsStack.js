@@ -6,7 +6,10 @@ import AddPlant from '../screens/home/AddPlant';
 
 const Stack = createStackNavigator();
 
-function SettingsStack() {
+export default function SettingsStack(props) {
+    const { unreg } = props;
+    const { navigation } = props;
+
     return (
         <Stack.Navigator 
             initialRouteName="Profile"
@@ -14,14 +17,12 @@ function SettingsStack() {
                 headerShown: false }}>
             <Stack.Screen 
                 name="Profile"
-                children={(props) => <ProfileScreen unregister={props.unregister} props={props}/> }
+                children={props => <ProfileScreen unreg={unreg} navigation={navigation}/> }
             />
             <Stack.Screen
                 name="AddPlant"
-                children={(props) => <AddPlant navigation={props.navigation}/>}
+                children={props => <AddPlant navigation={navigation} />}
             />
         </Stack.Navigator>
     )
 }
-
-export default SettingsStack;

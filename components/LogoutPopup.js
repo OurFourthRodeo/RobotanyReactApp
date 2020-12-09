@@ -2,23 +2,31 @@ import React, {useState} from 'react';
 import {Button, Text, StyleSheet, Image, View} from 'react-native';
 import Modal from 'react-native-modal';
 
+import * as api from '../services/Auth';
+
 function LogoutPopup(props) {
 
-    console.log(props);
+    const confirmLogout = () => {
+      props.toggleVisible();
+      props.unregister().then(() => api.logout())
+        .then(() => props.navigation.navigate('Auth', { screen: "SignIn" })); 
+    }
     return (
       <Modal
         isVisible={props.visible}
+        transparent={true}
         >
-        <View style={styles.container}>
+        {/* <View style={styles.container}> */}
           <View style={styles.card}>
             <View style={styles.header}>
-              <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> Logout </Text>
+              <Text style={{margin: 10, fontWeight:"bold",fontSize:20, alignSelf: "flex-start"}}> Are you sure you want to log out? </Text>
             </View>
-            <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> yay </Text>
-            <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}>Hello</Text>
-            <Button title="LOG OUT" onPress={props.toggleVisible}/>
+            <View style={styles.header}>
+              <Button title="Logout" onPress={confirmLogout}/>
+              <Button title="Cancel" onPress={props.toggleVisible}/>
+            </View>
           </View>
-        </View>
+        {/* </View> */}
       </Modal>
     );
   }
@@ -47,6 +55,7 @@ const styles = StyleSheet.create({
     },
     header: {
       flexDirection:"row",
+      justifyContent: 'center',
     }
 });
 

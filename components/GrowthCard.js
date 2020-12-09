@@ -44,7 +44,7 @@ const GrowthCard = (props) => {
         <View style={styles.row}>
           { {harvest} ? 
             <>
-              <Image style={styles.no_icon} source={{uri: yes}} />
+              <Image style={styles.yes_icon} source={{uri: yes}} />
               <Text style={styles.body}> ready for harvest. </Text>
             </>
           : 
