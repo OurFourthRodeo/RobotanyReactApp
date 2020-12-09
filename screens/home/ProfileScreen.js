@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, Alert, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
 
@@ -37,12 +37,9 @@ export default function ProfileScreen(props) {
                             onPress={() => { 
                                 unregister().then(() => api.logout())
                                     .then(() => navigation.navigate('Auth', { screen: "SignIn" })); 
-                            }}
-                        />                   
+                        }}/>                   
                     </SettingsList>
-
                     <LogoutPopup visible={visible} toggleVisible={toggleVisible}/>
-
                 </View>        
             </View>
         </SafeAreaView>
