@@ -4,14 +4,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
 
 import LogoutPopup from '../../components/LogoutPopup';
+import RemovePlant from '../../components/RemovePlant';
+
 import * as api from '../../services/Auth';
 
 export default function ProfileScreen(screenProps) {
     const { unreg } = screenProps;
     const { navigation } = screenProps;
     const [visible, setVisible] = useState(false);
+    const [removeVisible, setRemoveVisible] = useState(false);
 
+    // toggles logout popup visibility
     const toggleVisible = () => { setVisible(!visible) };
+    // toggles removePlant popup visibility
+    const toggleRemoveVisible = () => { setRemoveVisible(!removeVisible) };
 
     return (
         <SafeAreaView style={styles.safearea}>
@@ -31,7 +37,7 @@ export default function ProfileScreen(screenProps) {
                         />    
                         <SettingsList.Item 
                             title="Remove Plant"
-                            //onPress={() => {props.navigation.navigate('Auth', { screen: "SignIn" })}}
+                            onPress={toggleRemoveVisible}
                         />
                         <SettingsList.Item 
                             title="Log Out"
@@ -39,6 +45,7 @@ export default function ProfileScreen(screenProps) {
                             />                   
                     </SettingsList>
                     <LogoutPopup unregister={unreg} navigation={navigation} visible={visible} toggleVisible={toggleVisible}/>
+                    <RemovePlant navigation={navigation} visible={removeVisible} toggleVisible={toggleRemoveVisible}/>
                 </View>        
             </View>
         </SafeAreaView>
