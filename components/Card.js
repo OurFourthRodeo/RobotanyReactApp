@@ -24,7 +24,10 @@ const Card = (props) => {
           <Image style={styles.profileImg} source={{uri: profileImg}} />
           <Text style={{fontWeight:"bold",fontSize:24, alignSelf: "flex-start"}}> {props.title} </Text>
         </View>
-        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> {props.name} is thriving! </Text>
+        { ({moisture} > 0.5) ? 
+          <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> {props.name} is thriving! </Text>
+        : <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> {props.name} is NOT thriving! </Text>
+        }
         <ProgressBar style={{marginTop: 10, height: 20, borderRadius: 10}} progress={moisture/4095} color="green" />
         <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}>{((moisture/4095)*100).toFixed(2) + "% watered!"}</Text>
       </View>

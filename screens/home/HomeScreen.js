@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
-import Card from '../../components/Card'
-import ImageCard from '../../components/ImageCard'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { render } from 'react-dom';
 import * as api from "../../services/Auth"
-import { AppLoading } from 'expo';
+
+import Card from '../../components/Card';
+import ImageCard from '../../components/ImageCard';
+import GrowthCard from '../../components/GrowthCard';
 
 export default function Home(props) {
   const { navigation } = props;
@@ -53,12 +53,18 @@ export default function Home(props) {
               setSelectedPlant(plant);
             }}
           />
+          
           <TouchableOpacity onPress={() => navigation.navigate("Plant Details")}>
             <Card title="Plant Health" 
               name={selectedPlant ? selectedPlant.name : "No plant"}
-              plant_mac={selectedPlant ? selectedPlant.mac : 0} 
-              />
+              plant_mac={selectedPlant ? selectedPlant.mac : 0} />
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Plant Details")}>
+            <GrowthCard name={selectedPlant ? selectedPlant.name : "Select a plant"}
+                plant_mac={selectedPlant ? selectedPlant.mac : 0} />
+          </TouchableOpacity>
+
           <ImageCard title="Recent Image" plant={selectedPlant ? selectedPlant.mac : null} />
         </View>
     </SafeAreaView>

@@ -36,15 +36,15 @@ const ImageCard = (props) => {
 const styles = StyleSheet.create({
     container: {
       justifyContent: 'center',
-      paddingTop: Constants.statusBarHeight,
       backgroundColor: '#ecf0f1',
+      paddingTop: 10,
     },
     image: {
       height: 250,
       width: "95%",
       borderRadius: 5,
       alignSelf: "center",
-      marginTop: 5,
+      marginTop: 8,
       resizeMode: 'contain',
     },
     card:{
@@ -71,33 +71,4 @@ const styles = StyleSheet.create({
     }
 });
 
-
 export default ImageCard;
-
-// const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       justifyContent: 'center',
-//       paddingTop: Constants.statusBarHeight,
-//       backgroundColor: '#ecf0f1',
-//       padding: 8,
-//       alignItems:"center"
-//     },
-//     card:{
-//       height:150,
-//       width:"80%",
-//       backgroundColor:"white",
-//       borderRadius:15,
-//       elevation:10,
-//       padding:10
-//     },
-//     profileImg:{
-//       width:30,
-//       height:30,
-//       borderRadius:50,
-//       marginRight:10,
-//     },
-//     header: {
-//       flexDirection:"row",
-//     }
-// });
