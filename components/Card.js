@@ -26,7 +26,7 @@ const Card = (props) => {
         </View>
         <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}> {props.name} is thriving! </Text>
         <ProgressBar style={{marginTop: 10, height: 20, borderRadius: 10}} progress={moisture/4095} color="green" />
-        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}>{(moisture/4095)*100 + "% watered!"}</Text>
+        <Text style={{marginTop: 10, marginLeft: 5, alignSelf: "center"}}>{((moisture/4095)*100).toFixed(2) + "% watered!"}</Text>
       </View>
     </View>
   );

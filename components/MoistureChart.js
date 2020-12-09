@@ -49,45 +49,80 @@ export default class MoistureChart extends React.Component {
     render(){
         console.log(this.state)
         return(
-            <View>
-                {this.state.data.length > 1 ? 
-               <LineChart data={{
-                   labels: this.state.labels,
-                   datasets: [
-                       {
-                           data: this.state.data,
-                       }
-                   ],
-                }}
-                width={Dimensions.get("window").width-10}
-                height={400}
-                yAxisInterval={1} // optional, defaults to 1
-                yAxisSuffix={"%"}
-                verticalLabelRotation={90}
-                
-                chartConfig={{
-                  backgroundColor: "#e26a00",
-                  backgroundGradientFrom: "#fb8c00",
-                  backgroundGradientTo: "#ffa726",
-                  decimalPlaces: 0, // optional, defaults to 2dp
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  style: {
-                    borderRadius: 16
-                  },
-                  propsForDots: {
-                    r: "3",
-                    strokeWidth: "2",
-                    stroke: "#ffa726"
-                  }
-                }}
-                bezier
-                style={{
-                  marginVertical: 8,
-                  borderRadius: 16
-                }}
-             /> : <Text>No moisture data logged.</Text>}
+            <View style={styles.container}>
+                <View style={styles.card}>
+                    <View style={styles.header}>
+                        <Text style={{marginLeft: 10, color: "#375177", fontSize:24, alignSelf: "flex-start"}}> Moisture over the past 24 hours </Text>
+                    </View>
+                    {this.state.data.length > 1 ? 
+                <LineChart 
+                    data={{
+                        labels: this.state.labels,
+                        datasets: [
+                            {
+                                data: this.state.data,
+                            }
+                        ],
+                    }}
+                    width={Dimensions.get("window").width-40}
+                    height={300}
+                    yAxisInterval={1} // optional, defaults to 1
+                    yAxisSuffix={"%"}
+                    verticalLabelRotation={90}
+                    
+                    chartConfig={{
+                        backgroundColor: "green",
+                        backgroundGradientFrom: "white",
+                        backgroundGradientTo: "white",
+                        decimalPlaces: 0, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(115, 227, 103, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(25, 76, 20, ${opacity})`,
+                        style: {
+                            borderRadius: 16
+                        },
+                        propsForDots: {
+                            r: "2",
+                            strokeWidth: "2",
+                            stroke: "#194C14"
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16
+                    }}
+                /> : <Text style={{ paddingLeft: 15 }}>No moisture data logged.</Text>}
+                </View>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      justifyContent: 'center',
+      backgroundColor: '#ecf0f1',
+    },
+    card:{
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0,
+      shadowRadius: 2,  
+      elevation: 2,
+      backgroundColor:"white",
+      borderRadius:15,
+      paddingTop:10,
+      paddingRight:10,
+      paddingBottom: 10,
+      marginVertical: 10,
+    },
+    profileImg:{
+      width:30,
+      height:30,
+      borderRadius:50,
+      marginRight:5,
+    },
+    header: {
+      flexDirection:"row",
+    }
+});

@@ -1,6 +1,5 @@
 import React, { useContext, useMemo, useReducer} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import CreateAccountScreen from '../screens/auth/CreateAccountScreen';

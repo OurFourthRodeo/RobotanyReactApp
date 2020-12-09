@@ -2,13 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, Alert, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsList from 'react-native-settings-list';
-const profileImg ="https://image.flaticon.com/icons/png/512/628/628283.png"
 
+import LogoutPopup from '../../components/LogoutPopup';
 import * as api from '../../services/Auth';
 
 export default function ProfileScreen(props) {
     const { unregister } = props;
     const navigation = props.props.navigation;
+    const [visible, setVisible] = useState(false);
+
+    const toggleVisible = () => { setVisible(!visible) };
 
     return (
         <SafeAreaView style={styles.safearea}>
@@ -22,12 +25,12 @@ export default function ProfileScreen(props) {
                         <SettingsList.Item 
                             title="Add Plant"
                             onPress={() => {
-                                Alert.alert('nothing');
-                                console.log(props)
-                            } }
+                                props.props.navigation.navigate("AddPlant");
+                            }}
                         />    
                         <SettingsList.Item 
                             title="Remove Plant"
+                            onPress={toggleVisible}
                         />
                         <SettingsList.Item 
                             title="Log Out"
@@ -37,6 +40,9 @@ export default function ProfileScreen(props) {
                             }}
                         />                   
                     </SettingsList>
+
+                    <LogoutPopup visible={visible} toggleVisible={toggleVisible}/>
+
                 </View>        
             </View>
         </SafeAreaView>

@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/home/HomeScreen';
 import PlantScreen from '../screens/home/PlantScreen';
 import ProfileScreen from '../screens/home/ProfileScreen';
+import SettingsStack from './SettingsStack';
 
 // notifications
 import Constants from 'expo-constants';
@@ -84,7 +84,7 @@ function createHomeStack() {
             />
             <Tab.Screen 
                 name="Profile"
-                children={(props) => <ProfileScreen unregister={unregister} props={props}/>}
+                children={(props) => <SettingsStack unregister={unregister} props={props}/>}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (

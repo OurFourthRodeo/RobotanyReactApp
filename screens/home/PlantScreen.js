@@ -57,11 +57,8 @@ export default class PlantScreen extends React.Component {
                 })
               }}
             />
-          <Text style={{fontSize:25, color:"#375177",}}>Moisture Over the Past 24 Hours</Text>
+          {/* <Text style={{fontSize:25, color:"#375177",}}>Moisture Over the Past 24 Hours</Text> */}
           <MoistureChart plant={this.state.selectedPlant ? this.state.selectedPlant.mac : null} />
-            {/* {testData.map((item, idx) => (
-              <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} />
-            ))} */}
         </View>
       </SafeAreaView>
     );
@@ -78,6 +75,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'column',
     margin: 5,
+    padding: 10
   },
   title:{
       fontWeight:"bold",
