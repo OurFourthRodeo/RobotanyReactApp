@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Buffer } from "buffer";
 import * as c from '../constants'
 
 // error handler
@@ -199,7 +200,20 @@ export async function getPlants() {
     }
 }
 
-
+export async function connectPlant(ssid, password){
+    var startCmd = new Buffer([0x08, 0x02, 0x62, ssid.length+password.length+4, 0x0a, ssid.length]);
+    var ssidBuf = Buffer.from(ssid, 'utf-8');
+    var passPrepBuf = new Buffer([0x12, password.length]);
+    var passBuf = Buffer.from(password, "utf-8");
+    var totalBuf = Buffer.concat([startCmd, ssidBuf, passPrepBuf, passBuf]);
+    console.log(totalBuf.toString('hex'));
+    endpoint = "192.168.4.1/prov-config"
+    console.log("API: connecting plant to WiFi")
+    headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"};
+    await axios.post(endpoint, totalBuf, {headers})
+    var confirmBuf = new Buffer([0x08, 0x04]);
+    await axios.post(endpoint, confirmBuf, {headers})
+}
 
 
 

@@ -11,6 +11,8 @@
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/netinfo": "^5.9.9",
+    "@react-native-community/protobufjs": "^6.7.3-custom",
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@react-navigation/drawer": "^5.9.3",
     "@react-navigation/material-bottom-tabs": "^5.3.10",

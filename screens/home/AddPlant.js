@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
+
 import 'react-native-gesture-handler';
 
 import * as api from '../../services/Auth';
@@ -10,12 +12,29 @@ export default function AddPlant(props) {
   // state variables
   const [plantName, setName] = useState('');
   const [mac, setMac] = useState('');
+  const [ssid, setSSID] = useState('');
+  const [wifiPassword, setPassword] = useState('');
+  const [unregister, setUnregister] = useState(null)
 
   async function onSubmit() {
     try {
+      // Connected to ESP32 SoftAP
+      await api.connectPlant(ssid, wifiPassword);
+
+      // Wait for network change
+      setUnregister(NetInfo.addEventListener(addPlantToUser));
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function addPlantToUser() {
+    try{
+      // Once Connected to WiFi
       let response = await api.addPlant(plantName, mac);
       navigation.navigate('Profile', {screen: "Profile"});
-  
+      unregister();
     } catch (error) {
       console.log(error.message);
     }
@@ -39,6 +58,22 @@ export default function AddPlant(props) {
             placeholder="mac address..." 
             placeholderTextColor="#003f5c"
             onChangeText={setMac} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="ssid..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setSSID} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="password..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setPassword} />
         </View>
 
         <TouchableOpacity 
