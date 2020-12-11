@@ -15,16 +15,19 @@ export default function AddPlant(props) {
   const [ssid, setSSID] = useState('');
   const [wifiPassword, setPassword] = useState('');
   const [unregister, setUnregister] = useState(null)
+  const [networkState, setNetState] = useState('')
 
   async function onSubmit() {
     try {
       // Connected to ESP32 SoftAP
-      await api.connectPlant(ssid, wifiPassword);
+      let response = await api.connectPlant(ssid, wifiPassword);
 
       // Wait for network change
       setUnregister(NetInfo.addEventListener(addPlantToUser));
   
     } catch (error) {
+      setNetState(error);
+      console.log("Caught error.")
       console.log(error.message);
     }
   }

@@ -1,38 +1,51 @@
 import React, { useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
+
 import 'react-native-gesture-handler';
 
 import * as api from '../../services/Auth';
 
-export default function PlantSetup(props) {
+export default function AddPlant(props) {
   const { navigation } = props;
-  const { navigate } = navigation;
 
   // state variables
   const [plantName, setName] = useState('');
-  const [plantType, setType] = useState('');
   const [mac, setMac] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [ssid, setSSID] = useState('');
+  const [wifiPassword, setPassword] = useState('');
+  const [unregister, setUnregister] = useState(null)
+  const [networkState, setNetState] = useState('')
 
   async function onSubmit() {
-    console.log(`Form submitted`);
-    setLoading(true);
-
     try {
-      let response = await api.addPlant(plantName, mac);
-      setLoading(false);
+      // Connected to ESP32 SoftAP
+      let response = await api.connectPlant(ssid, wifiPassword);
 
-      navigate('Home');
+      // Wait for network change
+      setUnregister(NetInfo.addEventListener(addPlantToUser));
   
     } catch (error) {
+      setNetState(error);
+      console.log("Caught error.")
       console.log(error.message);
-      setLoading(false);
+    }
+  }
+
+  async function addPlantToUser() {
+    try{
+      // Once Connected to WiFi
+      let response = await api.addPlant(plantName, mac);
+      navigation.navigate('Home');
+      unregister();
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>add your plant</Text>
+      <Text style={styles.logo}>add a new plant</Text>
 
         <View style={styles.inputView} >
           <TextInput  
@@ -48,6 +61,22 @@ export default function PlantSetup(props) {
             placeholder="mac address..." 
             placeholderTextColor="#003f5c"
             onChangeText={setMac} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="ssid..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setSSID} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="password..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={setPassword} />
         </View>
 
         <TouchableOpacity 

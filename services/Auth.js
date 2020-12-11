@@ -207,12 +207,12 @@ export async function connectPlant(ssid, password){
     var passBuf = Buffer.from(password, "utf-8");
     var totalBuf = Buffer.concat([startCmd, ssidBuf, passPrepBuf, passBuf]);
     console.log(totalBuf.toString('hex'));
-    endpoint = "192.168.4.1/prov-config"
+    endpoint = "http://192.168.4.1/prov-config"
     console.log("API: connecting plant to WiFi")
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"};
-    await axios.post(endpoint, totalBuf, {headers})
+    await fetch(endpoint, {method: 'POST', body: totalBuf, headers})
     var confirmBuf = new Buffer([0x08, 0x04]);
-    await axios.post(endpoint, confirmBuf, {headers})
+    await fetch(endpoint, {method: 'POST', body: confirmBuf, headers})
 }
 
 
